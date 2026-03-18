@@ -155,8 +155,11 @@ function neoweave_interactive_blog_shortcode() {
         'post_status'    => 'publish',
         'posts_per_page' => -1,
     );
-    $query = new WP_Query($args);
+
+    $query  = new WP_Query( $args );
     $output = '<div class="neoweave-terminal-wrapper">';
+
+    // Sidebar
     $output .= '
     <div class="terminal-sidebar">
         <div class="scanline"></div>
@@ -166,33 +169,43 @@ function neoweave_interactive_blog_shortcode() {
             <p>ENTROPY: 14.2%</p>
         </div>
         <nav class="terminal-menu">
-            <button onclick="filterLogs(\\'all\\')">[ SHOW_ALL ]</button>
-            <button onclick="filterLogs(\\'lore\\')">[ LORE_ONLY ]</button>
+            <button onclick="filterLogs(\'all\')">[ SHOW_ALL ]</button>
+            <button onclick="filterLogs(\'lore\')">[ LORE_ONLY ]</button>
         </nav>
     </div>';
-    $output .= '<div class="terminal-screen">
+
+    // Screen
+    $output .= '
+    <div class="terminal-screen">
         <header class="screen-header">SELECT DATA_STREAM TO INITIALIZE...</header>
         <div id="log-display" class="log-display">';
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
+
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
             $query->the_post();
-            $title = strtoupper(get_the_title());
-            $date = get_the_date('Ymd');
-            $id = get_the_ID();         
+
+            $title = strtoupper( get_the_title() );
+            $date  = get_the_date( 'Ymd' );
+            $link  = get_permalink();
+
             $output .= '
-            <div class="interactive-log-item" onclick="window.location=\\''.get_permalink().'\\'" data-category="lore">
-                <span class="log-date">[' . $date . ']</span>
-                <span class="log-title">> ' . $title . '</span>
+            <div class="interactive-log-item" onclick="window.location=\'' . esc_url( $link ) . '\'" data-category="lore">
+                <span class="log-date">[' . esc_html( $date ) . ']</span>
+                <span class="log-title">&gt; ' . esc_html( $title ) . '</span>
                 <span class="log-cursor">_</span>
             </div>';
         }
         wp_reset_postdata();
     }
-    $output .= '</div>
+
+    $output .= '
+        </div>
         <footer class="screen-footer">
             <span class="prompt">guest@neoweave:~$</span> <span class="typing-text">list_archives --active</span>
         </footer>
-    </div></div>';
+    </div>
+</div>';
+
     return $output;
 }
-add_shortcode('neoweave_interactive_blog', 'neoweave_interactive_blog_shortcode');
+add_shortcode( 'neoweave_interactive_blog', 'neoweave_interactive_blog_shortcode' );
