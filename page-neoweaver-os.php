@@ -48,7 +48,7 @@ get_header();
                 </div>
                 <div class="neo-meta-item">
                     <span class="neo-label">SYNC:</span> 
-                    <span id="sync-value" class="neo-value">98.4%</span><span class="neo-cursor"></span>
+                    <span id="sync-value" class="neo-value">98.4%</span>
                 </div>
             </div>
         </footer>
