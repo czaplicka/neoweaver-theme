@@ -1,211 +1,151 @@
 <?php
-// CSS
-add_action( 'wp_enqueue_scripts', function() {
-    wp_enqueue_style(
-        'neoweave-style',
-        get_stylesheet_uri(),
-        [],
-        wp_get_theme()->get('Version')
-    );
+/**
+ * NeoWeaver Engine - Core Functions
+ */
 
-    wp_enqueue_style(
-        'neoweave-swiper',
-        'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css',
-        [],
-        null
-    );
-});
+// ─── 1. THEME SUPPORT ────────────────────────────────────────────────────────
+add_action( 'after_setup_theme', function () {
+	add_theme_support( 'title-tag' );
+	add_theme_support( 'post-thumbnails' );
+} );
 
-// JS
-add_action( 'wp_enqueue_scripts', function() {
+// ─── 2. UNCONDITIONAL ASSETS ─────────────────────────────────────────────────
+// Enqueue styles and scripts that are needed on every page.
+// is_page_template() must NOT be called here — the query is not yet run
+// when wp_enqueue_scripts fires, so it would trigger the is_singular notice.
+add_action( 'wp_enqueue_scripts', function () {
+	$version  = time(); // bust cache on every load during development
+	$base_url = get_stylesheet_directory_uri();
 
-    // Header JS
-    wp_enqueue_script(
-        'neoweave-header',
-        get_template_directory_uri() . '/assets/js/neo-header.js',
-        [],
-        wp_get_theme()->get('Version'),
-        true
-    );
+	// Main theme stylesheet
+	wp_enqueue_style( 'neo-style', get_stylesheet_uri(), [], $version, 'all' );
 
-    // Swiper core
-    wp_enqueue_script(
-        'neoweave-swiper-core',
-        'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js',
-        [],
-        null,
-        true
-    );
+	// Swiper CSS
+	wp_enqueue_style( 'neo-swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', [], null );
 
-    // Swiper init (zależny od core)
-    wp_enqueue_script(
-        'neoweave-swiper-init',
-        get_template_directory_uri() . '/assets/js/neo-swiper.js',
-        ['neoweave-swiper-core'],
-        wp_get_theme()->get('Version'),
-        true
-    );
+	// Header / clock script
+	wp_enqueue_script( 'neo-header', $base_url . '/assets/js/neo-header.js', [], $version, true );
 
-    // JS tylko dla NeoWeave OS
-    if ( is_page_template( 'page-neoweave-os.php' ) ) {
-        wp_enqueue_script(
-            'neoweave-os',
-            get_template_directory_uri() . '/assets/js/neo-os.js',
-            [],
-            wp_get_theme()->get('Version'),
-            true
-        );
-    }
-});
-add_action( 'after_setup_theme', function() {
-    add_theme_support( 'title-tag' );
-});
-add_filter( 'post_row_actions', 'wpcode_snippet_duplicate_post_link', 10, 2 );
-add_filter( 'page_row_actions', 'wpcode_snippet_duplicate_post_link', 10, 2 );
-if ( ! function_exists( 'wpcode_snippet_duplicate_post_link' ) ) {
-	function wpcode_snippet_duplicate_post_link( $actions, $post ) {
-		$post_type_object = get_post_type_object( $post->post_type );
-		if ( null === $post_type_object || ! current_user_can( $post_type_object->cap->create_posts ) ) {
-			return $actions;
-		}
-		$url = wp_nonce_url(
-			add_query_arg(
-				array(
-					'action'  => 'wpcode_snippet_duplicate_post',
-					'post_id' => $post->ID,
-				),
-				'admin.php'
-			),
-			'wpcode_duplicate_post_' . $post->ID,
-			'wpcode_duplicate_nonce'
+	// Swiper core + init
+	wp_enqueue_script( 'neo-swiper-core', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', [], null, true );
+	wp_enqueue_script( 'neo-swiper-init', $base_url . '/assets/js/neo-swiper.js', [ 'neo-swiper-core' ], $version, true );
+}, 20 );
+
+// ─── 3. CONDITIONAL ASSET: neo-os.js ─────────────────────────────────────────
+// is_page_template() is safe inside the `wp` hook because the main query has
+// already run by the time `wp` fires — unlike wp_enqueue_scripts which can
+// execute before the query is resolved (causing the is_singular() notice).
+add_action( 'wp', function () {
+	if (
+		is_page_template( 'page-neoweave-os.php' ) ||
+		is_page_template( 'template-neoweave-os-terminal.php' )
+	) {
+		$version  = time();
+		$base_url = get_stylesheet_directory_uri();
+
+		add_action(
+			'wp_enqueue_scripts',
+			function () use ( $base_url, $version ) {
+				wp_enqueue_script( 'neo-os', $base_url . '/assets/js/neo-os.js', [], $version, true );
+			},
+			20
 		);
-		$actions['wpcode_duplicate'] = '<a href="' . $url . '" title="Duplicate item" rel="permalink">Duplicate</a>';
-		return $actions;
-	}
-}
-add_action( 'admin_action_wpcode_snippet_duplicate_post', function () {
-	if ( empty( $_GET['post_id'] ) ) {
-		wp_die( 'No post id set for the duplicate action.' );
-	}
-	$post_id = absint( $_GET['post_id'] );
-	if ( ! isset( $_GET['wpcode_duplicate_nonce'] ) || ! wp_verify_nonce( $_GET['wpcode_duplicate_nonce'], 'wpcode_duplicate_post_' . $post_id ) ) {
-		// Display a message if the nonce is invalid, may it expired.
-		wp_die( 'The link you followed has expired, please try again.' );
-	}
-	$post = get_post( $post_id );
-	if ( $post ) {
-		$current_user = wp_get_current_user();
-		$new_post     = array(
-			'comment_status' => $post->comment_status,
-			'menu_order'     => $post->menu_order,
-			'ping_status'    => $post->ping_status,
-			'post_author'    => $current_user->ID,
-			'post_content'   => $post->post_content,
-			'post_excerpt'   => $post->post_excerpt,
-			'post_name'      => $post->post_name,
-			'post_parent'    => $post->post_parent,
-			'post_password'  => $post->post_password,
-			'post_status'    => 'draft',
-			'post_title'     => $post->post_title . ' (copy)',// Add "(copy)" to the title.
-			'post_type'      => $post->post_type,
-			'to_ping'        => $post->to_ping,
-		);
-		// Create the new post
-		$duplicate_id = wp_insert_post( $new_post );
-		// Copy the taxonomy terms.
-		$taxonomies = get_object_taxonomies( get_post_type( $post ) );
-		if ( $taxonomies ) {
-			foreach ( $taxonomies as $taxonomy ) {
-				$post_terms = wp_get_object_terms( $post_id, $taxonomy, array( 'fields' => 'slugs' ) );
-				wp_set_object_terms( $duplicate_id, $post_terms, $taxonomy );
-			}
-		}
-		// Copy all the custom fields.
-		$post_meta = get_post_meta( $post_id );
-		if ( $post_meta ) {
-
-			foreach ( $post_meta as $meta_key => $meta_values ) {
-				if ( '_wp_old_slug' === $meta_key ) { // skip old slug.
-					continue;
-				}
-				foreach ( $meta_values as $meta_value ) {
-					add_post_meta( $duplicate_id, $meta_key, maybe_unserialize( $meta_value ) );
-				}
-			}
-		}
-
-		// Redirect to edit the new post.
-		wp_safe_redirect(
-			add_query_arg(
-				array(
-					'action' => 'edit',
-					'post'   => $duplicate_id
-				),
-				admin_url( 'post.php' )
-			)
-		);
-		exit;
-	} else {
-		wp_die( 'Error loading post for duplication, please try again.' );
 	}
 } );
-function neoweave_interactive_blog_shortcode() {
-    $args = array(
-        'post_type'      => 'post',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-    );
 
-    $query  = new WP_Query( $args );
-    $output = '<div class="neoweave-terminal-wrapper">';
+// ─── 4. SHORTCODE: INTERACTIVE LOG LIST (Terminal Style) ─────────────────────
+function neo_interactive_blog_shortcode() {
+	$args = [
+		'post_type'      => 'post',
+		'post_status'    => 'publish',
+		'posts_per_page' => -1,
+	];
 
-    // Sidebar
-    $output .= '
-    <div class="terminal-sidebar">
-        <div class="scanline"></div>
-        <div class="system-info">
-            <p>NODE: ARCHIVE_01</p>
-            <p>STATUS: <span class="blink">ENCRYPTED</span></p>
-            <p>ENTROPY: 14.2%</p>
-        </div>
-        <nav class="terminal-menu">
-            <button onclick="filterLogs(\'all\')">[ SHOW_ALL ]</button>
-            <button onclick="filterLogs(\'lore\')">[ LORE_ONLY ]</button>
-        </nav>
-    </div>';
+	$query  = new WP_Query( $args );
+	$output = '<div class="neo-terminal-wrapper neo-interactive-archives">';
 
-    // Screen
-    $output .= '
-    <div class="terminal-screen">
-        <header class="screen-header">SELECT DATA_STREAM TO INITIALIZE...</header>
-        <div id="log-display" class="log-display">';
+	// Terminal sidebar (filters)
+	$output .= '
+	<div class="neo-terminal-sidebar">
+		<div class="neo-scanline"></div>
+		<div class="neo-system-info">
+			<p>[NODE: ARCHIVE_01]</p>
+			<p>[STATUS: <span class="neo-blink neo-accent">ENCRYPTED</span>]</p>
+			<p>[ENTROPY: <span id="entropy-val">14.2%</span>]</p>
+		</div>
+		<nav class="neo-terminal-menu">
+			<button type="button" class="neo-btn is-active" data-filter="all" onclick="neoFilterLogs(\'all\')">[ SHOW_ALL ]</button>
+			<button type="button" class="neo-btn" data-filter="lore" onclick="neoFilterLogs(\'lore\')">[ LORE_DATA ]</button>
+			<button type="button" class="neo-btn" data-filter="dev" onclick="neoFilterLogs(\'dev\')">[ DEV_LOGS ]</button>
+		</nav>
+	</div>';
 
-    if ( $query->have_posts() ) {
-        while ( $query->have_posts() ) {
-            $query->the_post();
+	// Terminal screen (results)
+	$output .= '
+	<div class="neo-terminal-screen">
+		<header class="neo-screen-header">SELECT DATA_STREAM TO INITIALIZE...</header>
+		<div id="neo-log-display" class="neo-log-display">';
 
-            $title = strtoupper( get_the_title() );
-            $date  = get_the_date( 'Ymd' );
-            $link  = get_permalink();
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
 
-            $output .= '
-            <div class="interactive-log-item" onclick="window.location=\'' . esc_url( $link ) . '\'" data-category="lore">
-                <span class="log-date">[' . esc_html( $date ) . ']</span>
-                <span class="log-title">&gt; ' . esc_html( $title ) . '</span>
-                <span class="log-cursor">_</span>
-            </div>';
-        }
-        wp_reset_postdata();
-    }
+			$title    = strtoupper( get_the_title() );
+			$date     = get_the_date( 'Ymd' );
+			$link     = get_permalink();
+			$cats     = get_the_category();
+			$cat_slug = ! empty( $cats ) ? $cats[0]->slug : 'lore';
 
-    $output .= '
-        </div>
-        <footer class="screen-footer">
-            <span class="prompt">guest@neoweave:~$</span> <span class="typing-text">list_archives --active</span>
-        </footer>
-    </div>
+			$output .= '
+			<div class="neo-interactive-log-item"
+			     onclick="window.location=\'' . esc_url( $link ) . '\'"
+			     data-category="' . esc_attr( $cat_slug ) . '">
+				<span class="neo-log-date">[' . esc_html( $date ) . ']</span>
+				<span class="neo-log-title">&gt; ' . esc_html( $title ) . '</span>
+				<span class="neo-cursor">_</span>
+			</div>';
+		}
+		wp_reset_postdata();
+	}
+
+	$output .= '
+		</div>
+		<footer class="neo-screen-footer">
+			<span class="neo-prompt">guest@neoweave:~$</span>
+			<span class="neo-typing-text">list_archives --active</span>
+		</footer>
+	</div>
 </div>';
 
-    return $output;
+	// Inline JS — filter logic
+	$output .= '
+	<script>
+	function neoFilterLogs(category) {
+		const items   = document.querySelectorAll(".neo-interactive-log-item");
+		const buttons = document.querySelectorAll(".neo-terminal-menu button");
+		items.forEach(item => {
+			const cat = item.getAttribute("data-category") || "all";
+			item.style.display = (category === "all" || cat === category) ? "flex" : "none";
+		});
+		buttons.forEach(btn => {
+			btn.classList.toggle("is-active", btn.getAttribute("data-filter") === category);
+		});
+	}
+	</script>';
+
+	return $output;
 }
-add_shortcode( 'neoweave_interactive_blog', 'neoweave_interactive_blog_shortcode' );
+add_shortcode( 'neo_interactive_blog', 'neo_interactive_blog_shortcode' );
+
+// ─── 5. SIDEBAR REGISTRATION ─────────────────────────────────────────────────
+add_action( 'widgets_init', function () {
+	register_sidebar( [
+		'name'          => 'Terminal Sidebar',
+		'id'            => 'terminal-sidebar',
+		'description'   => 'Panel dla statystyk Agenta.',
+		'before_widget' => '<section id="%1$s" class="neo-widget %2$s neo-terminal-card">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="neo-widget-title neo-glitch-text">',
+		'after_title'   => '</h2>',
+	] );
+} );
