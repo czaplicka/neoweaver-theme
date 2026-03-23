@@ -1,41 +1,46 @@
 <?php
+/**
+ * 404 Error Template for NeoWeave
+ */
 get_header();
 ?>
 
-<main class="neoweave-terminal neoweave-terminal--post">
-    <div class="terminal-header">
-        [ROUTING_ERROR] [NODE_NOT_FOUND]
+<main class="neo-terminal-container neo-terminal--error">
+    <div class="neo-terminal-header-meta">
+        [ROUTING_ERROR] [NODE_NOT_FOUND] [PRIORITY: HIGH]
     </div>
 
-    <div class="status-bar">
-        STATUS: SIGNAL_LOST // CODE: 404
+    <div class="neo-status-bar">
+        STATUS: <span class="neo-error">SIGNAL_LOST</span> // CODE: 404 // NODE: UNKNOWN
     </div>
 
-    <h1 class="terminal-title">
-        NODE_NOT_FOUND<span class="terminal-cursor"></span>
+    <h1 class="neo-title">
+        NODE_NOT_FOUND<span class="neo-cursor"></span>
     </h1>
 
-    <p>
-        The path you attempted to access does not resolve to a valid Node
-        within the NeoWeave architecture. The thread may have been severed,
-        archived, or never instantiated.
-    </p>
+    <div class="neo-content-area">
+        <p>
+            The path you attempted to access does not resolve to a valid Node 
+            within the <span class="neo-accent">NeoWeaver</span> architecture. 
+            The thread may have been severed, archived, or never instantiated.
+        </p>
 
-    <span class="terminal-section-title">POSSIBLE_CAUSES</span>
-    <ul>
-        <li>Broken or outdated uplink.</li>
-        <li>Node has been decommissioned by the Architect.</li>
-        <li>Incorrect address injected into the Weave.</li>
-    </ul>
+        <h3 class="neo-label">POSSIBLE_CAUSES:</h3>
+        <ul class="neo-footer-list">
+            <li>> Broken or outdated uplink.</li>
+            <li>> Node has been decommissioned by the Architect.</li>
+            <li>> Incorrect address injected into the Weave.</li>
+        </ul>
 
-    <span class="terminal-section-title">RECOMMENDED_ACTIONS</span>
-    <ul>
-        <li>Return to the <a href="<?php echo esc_url( home_url( '/' ) ); ?>">[ ARCHITECT_CORE ]</a>.</li>
-        <li>Access the <a href="<?php echo esc_url( home_url( '/logs/' ) ); ?>">[ ACTIVE_LOGS ]</a> terminal.</li>
-        <li>Recalibrate your deployment path and try again.</li>
-    </ul>
+        <h3 class="neo-label">RECOMMENDED_ACTIONS:</h3>
+        <ul class="neo-footer-list">
+            <li>> Return to the <a href="<?php echo esc_url( home_url( '/' ) ); ?>">[ ARCHITECT_CORE ]</a>.</li>
+            <li>> Access the <a href="<?php echo esc_url( home_url( '/logs/' ) ); ?>">[ ACTIVE_LOGS ]</a> terminal.</li>
+            <li>> Recalibrate your deployment path and try again.</li>
+        </ul>
+    </div>
 
-    <div class="footer-log">
+    <div class="neo-footer-log">
         [END_OF_TRANSMISSION] [RELINK_SUGGESTED] [EOT]
     </div>
 </main>

@@ -1,62 +1,71 @@
-<?php
-get_header();
-?>
+<?php get_header(); ?>
 
-<main class="neoweave-terminal neoweave-terminal--post">
+<main class="neo-terminal-container neo-terminal--post"><div class="neoweave-terminal">
     <?php if ( have_posts() ) : ?>
         <?php while ( have_posts() ) : the_post(); ?>
 
-            <div class="terminal-header">
-                [LOG_ENTRY] [ID: <?php the_ID(); ?>] [NODE: SINGLE_POST]
+            <div class="neo-terminal-header-meta">
+                [LOG_ENTRY] [ID: <?php the_ID(); ?>] [FILE: SINGLE_POST]
             </div>
 
-            <div class="status-bar">
+            <div class="neo-status-bar">
                 DATE: <?php echo esc_html( get_the_date( 'Y-m-d H:i' ) ); ?> //
-                AUTHOR: <?php the_author(); ?>
+                ECHO: <?php
+                if ( has_tag() ) {
+                    // Generuje listę tagów z prefiksem #
+                    echo get_the_tag_list('<span class="neo-tags">#', '</span> <span class="neo-tags">#', '</span>');
+                } else {
+                    echo '<span class="neo-text-dim">NO_TAGS_DETECTED</span>';
+                }
+                ?>
             </div>
 
-            <h1 class="terminal-title">
+            <h1 class="neo-title">
                 <?php the_title(); ?>
             </h1>
 
-            <div class="terminal-content">
+            <div class="neo-content-area">
                 <?php the_content(); ?>
             </div>
 
-            <div class="footer-log">
-                [LOG_END] [EOT] <span class="terminal-cursor"></span>
+            <div class="neo-footer-log">
+                [LOG_END] [EOT] <span class="neo-cursor"></span>
             </div>
 
             <?php
-            // Nawigacja między wpisami
             $prev = get_previous_post();
             $next = get_next_post();
             if ( $prev || $next ) :
             ?>
-                <div class="nav-links">
-                    <div class="nav-previous">
+                <nav class="neo-nav-links">
+                    <div class="neo-nav-previous">
                         <?php if ( $prev ) : ?>
                             <a href="<?php echo get_permalink( $prev->ID ); ?>">&lt; PREV_LOG</a>
                         <?php endif; ?>
                     </div>
-                    <div class="nav-next">
+                    <div class="neo-nav-next">
                         <?php if ( $next ) : ?>
                             <a href="<?php echo get_permalink( $next->ID ); ?>">NEXT_LOG &gt;</a>
                         <?php endif; ?>
                     </div>
-                </div>
+                </nav>
             <?php endif; ?>
 
         <?php endwhile; ?>
-    <?php else : ?>
-
-        <div class="terminal-header">
-            [LOG_ERROR] [NO_ENTRY_FOUND]
-        </div>
-        <p>No log entry could be retrieved for this request.</p>
-
     <?php endif; ?>
-</main>
+<div class="terminal-header"><a href="/logs/">[LOGS]</a></div>
+    <div class="neo-terminal-footer-meta">
+        <div class="neo-connection-status">
+            &gt; CONNECTION_SECURE // NDE_ENCRYPTION_ACTIVE<br>
+            &gt; STANDBY_FOR_INPUT <span class="neo-cursor"></span>
+        </div>
 
-<?php
-get_footer();
+        <?php if ( is_active_sidebar( 'terminal-sidebar' ) ) : ?>
+            <aside id="secondary" class="neo-sidebar">
+                <?php dynamic_sidebar( 'terminal-sidebar' ); ?>
+            </aside>
+        <?php endif; ?>
+    </div>
+</main></div>
+
+<?php get_footer(); ?>
