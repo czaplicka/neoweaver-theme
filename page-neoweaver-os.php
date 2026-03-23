@@ -43,8 +43,8 @@ get_header();
             </div>
             <div class="neo-os-footer-meta">
                 <div class="neo-meta-item">
-                    <span class="neo-label">SESSION:</span> 
-                    <span class="neo-value neo-accent">ACTIVE</span> <span class="status-dot"></span>
+                    <span class="status-dot"></span><span class="neo-label"> SESSION:</span> 
+                    <span class="neo-value neo-accent">ACTIVE</span>
                 </div>
                 <div class="neo-meta-item">
                     <span class="neo-label">SYNC:</span> 
