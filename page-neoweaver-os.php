@@ -37,12 +37,19 @@ get_header();
             ?>
         </main>
 
-        <footer class="os-footer">
-            <div class="progress-container">
-                <div class="progress-bar"></div>
+        <footer class="neo-os-footer">
+            <div class="neo-progress-container">
+                <div class="neo-progress-bar"></div>
             </div>
-            <div class="os-footer-meta">
-                <span>SESSION_ACTIVE</span>
+            <div class="neo-os-footer-meta">
+                <div class="neo-meta-item">
+                    <span class="neo-label">SESSION:</span> 
+                    <span class="neo-value neo-accent">ACTIVE</span> <span class="status-dot"></span>
+                </div>
+                <div class="neo-meta-item">
+                    <span class="neo-label">SYNC:</span> 
+                    <span id="sync-value" class="neo-value">98.4%</span><span class="neo-cursor"></span>
+                </div>
             </div>
         </footer>
     </div>
