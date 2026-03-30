@@ -24,7 +24,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'neo-swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', [], null );
 
 	// Header / clock script
-	wp_enqueue_script( 'neo-header', $base_url . '/assets/js/neo-header.js', [], $version, true );
+	wp_enqueue_script( 'neo-header', $base_url . '/assets/js/neo-header.js', [], $version, false );
 
 	// Swiper core + init
 	wp_enqueue_script( 'neo-swiper-core', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', [], null, true );
