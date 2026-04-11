@@ -1,7 +1,7 @@
 /*
 Theme Name: NeoWeaver
 Author: Czaplicka
-Version: 1.3.1
+Version: 1.4.0
 */
 
 /* --- 1. CORE VARIABLES & FONTS --- */
@@ -244,7 +244,6 @@ a:hover,
 #neo-main-nav {
   display: none;
 }
-
 #neo-main-nav.is-open {
   display: block;
 }
@@ -377,7 +376,7 @@ body .neo-terminal-container::after {
   100%{ content: "█▒▒▒▒▒▒▒▒▒▒▒▒▒▒ 03%"; color: var(--neo-accent); }
 }
 
-/* Możesz używać takiego HTML:
+/* Można używać takiego HTML:
    <div class="neo-status-line">STABILITY:<span class="neo-bar"></span></div>
 */
 /* Stopka jak log systemowy */
@@ -458,7 +457,6 @@ body .neo-terminal-container::after {
   font-weight: 700;
   letter-spacing: 0.16em;
 }
-
 /* Główny neonowy podtytuł (NEOWEAVER: ARCHITECT_CORE) */
 .neo-title {
   display: inline-block;
@@ -702,7 +700,6 @@ body .neo-terminal-container::after {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
-
 /* tagi / statusy */
 .neoweave-tag {
   color: #adff00;
@@ -914,7 +911,6 @@ body .neo-terminal-container::after {
 .neo-lock-scroll {
   overflow: hidden;
 }
-
 .neo-auth-modal {
   position: fixed;
   inset: 0;
@@ -1013,9 +1009,7 @@ body .neo-terminal-container::after {
 .neo-auth-submit .button:hover {
   box-shadow: 0 0 18px rgba(173,255,0,1);
 }
-
-
-    .neoweave-terminal {
+.neoweave-terminal {
         background-color: #050505;
         color: #e0e0e0;
         font-family: 'Chakra Petch', sans-serif;
@@ -1198,7 +1192,6 @@ body .neo-terminal-container::after {
         95% { content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ 00%"; color: #ff0000; opacity: 0.5; } /* RESET */
         100% { content: "█▒▒▒▒▒▒▒▒▒▒▒▒▒▒ 02%"; color: #adff00; }
     }
-
     .entropy-bar {
         font-family: 'Chakra Petch', monospace;
         color: #adff00;
@@ -1306,15 +1299,16 @@ body .neo-terminal-container::after {
 
 
 /* ============================================================
-   === WOOCOMMERCE FIXES v1.3.1 ================================
+   === WOOCOMMERCE FIXES v1.4.0 — SHOP / PRODUCT / BUTTONS ===
    ============================================================ */
 
-/* --- SHOP PAGE: siatka produktów --- */
+/* ---- 1. SHOP PAGE: szerszy kontener ---- */
 
-/* Rozszerzamy kontener sklepu do pełnej szerokości terminala */
+/* Usuwamy ograniczenie 1000px na stronie sklepu i produktu */
 .woocommerce .neo-terminal-container,
 .woocommerce-page .neo-terminal-container {
-  max-width: 98% !important;
+  max-width: 1280px !important;
+  width: 96% !important;
   padding: 36px 40px !important;
 }
 
@@ -1330,7 +1324,7 @@ body .neo-terminal-container::after {
   margin-bottom: 24px;
 }
 
-/* Siatka produktów – 3 kolumny, responsywna */
+/* Siatka produktów – auto-fill, min 220px, bez artefaktów WooCommerce */
 .woocommerce ul.products {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
@@ -1338,10 +1332,15 @@ body .neo-terminal-container::after {
   list-style: none !important;
   padding: 0 !important;
   margin: 0 !important;
+  float: none !important;
+  width: 100% !important;
 }
 
-/* Karta produktu */
+/* Reset WooCommerce float na kartach */
 .woocommerce ul.products li.product {
+  width: auto !important;
+  float: none !important;
+  clear: none !important;
   background: #050a05 !important;
   border: 1px solid var(--neo-border) !important;
   padding: 16px !important;
@@ -1366,7 +1365,7 @@ body .neo-terminal-container::after {
   border: 1px solid rgba(173, 255, 0, 0.15);
 }
 
-/* Nazwa produktu */
+/* Nazwa, cena, gwiazdki */
 .woocommerce ul.products li.product .woocommerce-loop-product__title {
   color: var(--neo-accent) !important;
   font-family: var(--neo-font) !important;
@@ -1375,66 +1374,20 @@ body .neo-terminal-container::after {
   letter-spacing: 0.1em;
   margin-bottom: 8px !important;
 }
-
-/* Cena */
 .woocommerce ul.products li.product .price {
   color: var(--neo-text-main) !important;
   font-family: var(--neo-font) !important;
   font-size: 0.85rem !important;
   margin-bottom: 12px !important;
 }
-
-/* Rating gwiazdki */
 .woocommerce .star-rating span::before,
 .woocommerce .star-rating::before {
   color: var(--neo-accent) !important;
 }
 
 
-/* --- PRZYCISKI WOOCOMMERCE: koniec fioletowego --- */
+/* ---- 2. SINGLE PRODUCT PAGE: grafika full-width z odstępem ---- */
 
-.woocommerce a.button,
-.woocommerce button.button,
-.woocommerce input.button,
-.woocommerce #respond input#submit,
-.woocommerce a.button.alt,
-.woocommerce button.button.alt,
-.woocommerce input.button.alt,
-.woocommerce #payment #place_order {
-  background-color: transparent !important;
-  background: transparent !important;
-  color: var(--neo-accent) !important;
-  border: 1px solid var(--neo-accent) !important;
-  font-family: var(--neo-font) !important;
-  font-size: 0.78rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.14em !important;
-  padding: 8px 16px !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  cursor: pointer !important;
-  transition: background 0.18s, color 0.18s, box-shadow 0.18s !important;
-  text-decoration: none !important;
-}
-
-.woocommerce a.button:hover,
-.woocommerce button.button:hover,
-.woocommerce input.button:hover,
-.woocommerce #respond input#submit:hover,
-.woocommerce a.button.alt:hover,
-.woocommerce button.button.alt:hover,
-.woocommerce input.button.alt:hover,
-.woocommerce #payment #place_order:hover {
-  background-color: var(--neo-accent) !important;
-  background: var(--neo-accent) !important;
-  color: #000 !important;
-  box-shadow: 0 0 14px rgba(173, 255, 0, 0.6) !important;
-}
-
-
-/* --- SINGLE PRODUCT PAGE: strona produktu --- */
-
-/* Layout – grafika i opis obok siebie */
 .woocommerce div.product {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
@@ -1442,12 +1395,13 @@ body .neo-terminal-container::after {
   align-items: start !important;
 }
 
-/* Kolumna z grafiką – full width kontenera */
+/* Kolumna grafiki */
 .woocommerce div.product div.images {
   width: 100% !important;
+  padding: 0 !important;
 }
 
-/* Główna grafika produktu – pełna szerokość, z odstępem */
+/* Główna grafika – full-width, widoczny odstęp od krawędzi */
 .woocommerce div.product div.images img {
   width: 100% !important;
   height: auto !important;
@@ -1457,38 +1411,34 @@ body .neo-terminal-container::after {
   box-shadow: 0 0 20px rgba(173, 255, 0, 0.1);
 }
 
-/* Thumbnails pod grafiką */
+/* Thumbnails */
 .woocommerce div.product div.images .flex-control-thumbs {
   display: flex !important;
   gap: 8px !important;
   flex-wrap: wrap !important;
   margin-top: 8px !important;
 }
-
 .woocommerce div.product div.images .flex-control-thumbs li {
   width: calc(25% - 6px) !important;
   list-style: none !important;
 }
-
 .woocommerce div.product div.images .flex-control-thumbs li img {
   margin-bottom: 0 !important;
   opacity: 0.7;
   transition: opacity 0.18s;
 }
-
 .woocommerce div.product div.images .flex-control-thumbs li img:hover,
 .woocommerce div.product div.images .flex-control-thumbs li img.flex-active {
   opacity: 1;
   border-color: var(--neo-accent) !important;
 }
 
-/* Kolumna z opisem produktu */
+/* Kolumna opisu */
 .woocommerce div.product div.summary {
   width: 100% !important;
   color: var(--neo-text-main) !important;
 }
 
-/* Tytuł produktu */
 .woocommerce div.product .product_title {
   color: var(--neo-accent) !important;
   font-family: var(--neo-font) !important;
@@ -1498,8 +1448,6 @@ body .neo-terminal-container::after {
   text-shadow: 0 0 10px rgba(173, 255, 0, 0.5);
   margin-bottom: 16px !important;
 }
-
-/* Cena na stronie produktu */
 .woocommerce div.product p.price,
 .woocommerce div.product span.price {
   color: var(--neo-accent) !important;
@@ -1507,24 +1455,18 @@ body .neo-terminal-container::after {
   font-size: 1.3rem !important;
   margin-bottom: 20px !important;
 }
-
-/* Opis produktu */
 .woocommerce div.product .woocommerce-product-details__short-description {
   color: var(--neo-text-main) !important;
   font-family: var(--neo-font) !important;
   margin-bottom: 24px !important;
   line-height: 1.7;
 }
-
-/* Formularz dodawania do koszyka */
 .woocommerce div.product form.cart {
   margin-bottom: 24px !important;
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
 }
-
-/* Input ilości */
 .woocommerce div.product form.cart .qty {
   background: #020202 !important;
   border: 1px solid var(--neo-border) !important;
@@ -1534,8 +1476,6 @@ body .neo-terminal-container::after {
   width: 70px !important;
   text-align: center !important;
 }
-
-/* Meta: kategorie, tagi */
 .woocommerce div.product .product_meta {
   font-size: 0.78rem !important;
   color: var(--neo-text-dim) !important;
@@ -1543,25 +1483,20 @@ body .neo-terminal-container::after {
   padding-top: 16px !important;
   margin-top: 16px !important;
 }
-
 .woocommerce div.product .product_meta a {
   color: var(--neo-accent) !important;
 }
 
-/* Zakładki opisu / recenzji */
+/* Zakładki */
 .woocommerce div.product .woocommerce-tabs ul.tabs {
   padding: 0 !important;
-  margin: 0 0 0 !important;
+  margin: 0 !important;
   list-style: none !important;
   display: flex !important;
   gap: 4px !important;
   border-bottom: 1px solid var(--neo-border) !important;
 }
-
-.woocommerce div.product .woocommerce-tabs ul.tabs::before {
-  display: none !important;
-}
-
+.woocommerce div.product .woocommerce-tabs ul.tabs::before { display: none !important; }
 .woocommerce div.product .woocommerce-tabs ul.tabs li {
   background: transparent !important;
   border: 1px solid var(--neo-border) !important;
@@ -1569,7 +1504,6 @@ body .neo-terminal-container::after {
   border-radius: 0 !important;
   margin: 0 !important;
 }
-
 .woocommerce div.product .woocommerce-tabs ul.tabs li a {
   color: var(--neo-text-dim) !important;
   font-family: var(--neo-font) !important;
@@ -1579,16 +1513,13 @@ body .neo-terminal-container::after {
   padding: 8px 16px !important;
   text-shadow: none !important;
 }
-
 .woocommerce div.product .woocommerce-tabs ul.tabs li.active {
   background: rgba(173, 255, 0, 0.08) !important;
   border-color: var(--neo-accent) !important;
 }
-
 .woocommerce div.product .woocommerce-tabs ul.tabs li.active a {
   color: var(--neo-accent) !important;
 }
-
 .woocommerce div.product .woocommerce-tabs .panel {
   background: transparent !important;
   color: var(--neo-text-main) !important;
@@ -1598,7 +1529,7 @@ body .neo-terminal-container::after {
   font-family: var(--neo-font) !important;
 }
 
-/* Sekcja produktów powiązanych */
+/* Produkty powiązane */
 .woocommerce .related h2,
 .woocommerce .upsells h2 {
   color: var(--neo-accent) !important;
@@ -1609,18 +1540,83 @@ body .neo-terminal-container::after {
   margin-bottom: 20px !important;
 }
 
-/* Responsywność – mobile */
+
+/* ---- 3. PRZYCISKI WOOCOMMERCE: #adff00 / czarny tekst ---- */
+/* Nadpisanie domyślnego fioletowego WooCommerce */
+
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt,
+.woocommerce #payment #place_order,
+.woocommerce-cart .wc-proceed-to-checkout a.checkout-button,
+.woocommerce button.single_add_to_cart_button {
+  background-color: var(--neo-accent) !important;
+  background: var(--neo-accent) !important;
+  color: #000 !important;
+  border: 1px solid var(--neo-accent) !important;
+  font-family: var(--neo-font) !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em !important;
+  padding: 10px 20px !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 12px rgba(173, 255, 0, 0.5) !important;
+  cursor: pointer !important;
+  transition: box-shadow 0.18s, opacity 0.18s !important;
+  text-decoration: none !important;
+}
+
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce input.button:hover,
+.woocommerce #respond input#submit:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover,
+.woocommerce input.button.alt:hover,
+.woocommerce #payment #place_order:hover,
+.woocommerce-cart .wc-proceed-to-checkout a.checkout-button:hover,
+.woocommerce button.single_add_to_cart_button:hover {
+  background-color: var(--neo-accent) !important;
+  background: var(--neo-accent) !important;
+  color: #000 !important;
+  box-shadow: 0 0 22px rgba(173, 255, 0, 0.85) !important;
+  opacity: 0.92;
+}
+
+/* Ghost variant – dla "View cart", "Continue shopping" */
+.woocommerce a.button.wc-backward,
+.woocommerce a.button.added_to_cart {
+  background: transparent !important;
+  color: var(--neo-accent) !important;
+  border: 1px solid var(--neo-accent) !important;
+  box-shadow: none !important;
+  font-size: 0.72rem !important;
+}
+.woocommerce a.button.wc-backward:hover,
+.woocommerce a.button.added_to_cart:hover {
+  background: rgba(173, 255, 0, 0.1) !important;
+  box-shadow: 0 0 10px rgba(173, 255, 0, 0.4) !important;
+}
+
+
+/* ---- Responsywność ---- */
 @media (max-width: 768px) {
+  .woocommerce .neo-terminal-container,
+  .woocommerce-page .neo-terminal-container {
+    padding: 20px !important;
+    width: 100% !important;
+  }
+
   .woocommerce div.product {
     grid-template-columns: 1fr !important;
   }
 
   .woocommerce ul.products {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
-  }
-
-  .woocommerce .neo-terminal-container,
-  .woocommerce-page .neo-terminal-container {
-    padding: 20px !important;
   }
 }
