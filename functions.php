@@ -149,3 +149,156 @@ add_action( 'widgets_init', function () {
 		'after_title'   => '</h2>',
 	] );
 } );
+// 1. Pobierz postacie zalogowanego gracza z Supabase
+function neoweaver_get_player_characters( $wp_user_id ) {
+    $supa_url = defined('SUPABASE_URL') ? SUPABASE_URL : DB_SUPABASE_URL;
+    $supa_key = defined('SUPABASE_KEY') ? SUPABASE_KEY : DB_SUPABASE_KEY;
+
+    $response = wp_remote_get(
+        $supa_url . '/rest/v1/cyber_characters?wp_user_id=eq.' . $wp_user_id . '&is_active=eq.true&select=id,name',
+        [
+            'headers' => [
+                'apikey'        => $supa_key,
+                'Authorization' => 'Bearer ' . $supa_key,
+            ],
+        ]
+    );
+
+    if ( is_wp_error( $response ) ) return [];
+    return json_decode( wp_remote_retrieve_body( $response ), true );
+}
+
+// 2. Wyświetl pole wyboru postaci na checkoucie
+add_action( 'woocommerce_after_order_notes', function( $checkout ) {
+    // Sprawdź czy w koszyku jest produkt NeoWeaver
+    $has_neoweaver = false;
+    foreach ( WC()->cart->get_cart() as $cart_item ) {
+        if ( $cart_item['data']->get_attribute( 'neoweaver_item_id' ) ) {
+            $has_neoweaver = true;
+            break;
+        }
+    }
+    if ( ! $has_neoweaver ) return;
+
+    $characters = neoweaver_get_player_characters( get_current_user_id() );
+    if ( empty( $characters ) ) return;
+
+    $options = [ '' => '— Select your character —' ];
+    foreach ( $characters as $char ) {
+        $options[ $char['id'] ] = esc_html( $char['name'] );
+    }
+
+    woocommerce_form_field( 'neoweaver_character_id', [
+        'type'     => 'select',
+        'class'    => ['form-row-wide'],
+        'label'    => '⚔️ Which Field Agent receives this item?',
+        'required' => true,
+        'options'  => $options,
+    ], $checkout->get_value( 'neoweaver_character_id' ) );
+} );
+
+// 3. Walidacja — pole wymagane
+add_action( 'woocommerce_checkout_process', function() {
+    // Sprawdź czy w koszyku jest item NeoWeaver
+    $has_neoweaver = false;
+    foreach ( WC()->cart->get_cart() as $cart_item ) {
+        if ( $cart_item['data']->get_attribute( 'neoweaver_item_id' ) ) {
+            $has_neoweaver = true;
+            break;
+        }
+    }
+    if ( ! $has_neoweaver ) return;
+
+    if ( empty( $_POST['neoweaver_character_id'] ) ) {
+        wc_add_notice( 'Please select a Field Agent to receive the item.', 'error' );
+    }
+} );
+
+// 4. Zapisz wybrany character_id do meta zamówienia
+add_action( 'woocommerce_order_status_completed', function( $order_id ) {
+    $order        = wc_get_order( $order_id );
+    $character_id = $order->get_meta( '_neoweaver_character_id' );
+
+    if ( ! $character_id ) return;
+
+    $supa_url     = defined('SUPABASE_URL') ? SUPABASE_URL : DB_SUPABASE_URL;
+    $supa_key     = defined('SUPABASE_KEY') ? SUPABASE_KEY : DB_SUPABASE_KEY
+
+    foreach ( $order->get_items() as $item ) {
+        $product   = $item->get_product();
+        $item_uuid = $product->get_attribute( 'neoweaver_item_id' );
+
+        if ( ! $item_uuid ) continue;
+
+        $body = wp_json_encode( [
+            'character_id' => $character_id,
+            'item_id'      => $item_uuid,
+            'is_equipped'  => false,
+            'quantity'     => $item->get_quantity(),
+            'container_id' => null,
+        ] );
+
+        $response = wp_remote_post(
+            $supa_url . '/rest/v1/cyber_character_inventory',
+            [
+                'headers' => [
+                    'apikey'        => $supa_key,
+                    'Authorization' => 'Bearer ' . $supa_key,
+                    'Content-Type'  => 'application/json',
+                    'Prefer'        => 'return=representation', // zwróć wstawiony rekord
+                ],
+                'body' => $body,
+            ]
+        );
+
+        $status_code  = wp_remote_retrieve_response_code( $response );
+        $body_response = wp_remote_retrieve_body( $response );
+
+        if ( is_wp_error( $response ) ) {
+            error_log( '[NeoWeaver] WP HTTP error: ' . $response->get_error_message() );
+        } elseif ( $status_code >= 400 ) {
+            // Tu zobaczysz np. błąd triggera container fit
+            error_log( '[NeoWeaver] Supabase error ' . $status_code . ': ' . $body_response );
+        } else {
+            error_log( '[NeoWeaver] Item added to inventory: ' . $body_response );
+        }
+    }
+} );
+add_action( 'woocommerce_after_order_notes', function( $checkout ) {
+    $has_neoweaver = false;
+    foreach ( WC()->cart->get_cart() as $cart_item ) {
+        if ( $cart_item['data']->get_attribute( 'neoweaver_item_id' ) ) {
+            $has_neoweaver = true;
+            break;
+        }
+    }
+    if ( ! $has_neoweaver ) return;
+
+    $characters = neoweaver_get_player_characters( get_current_user_id() );
+
+    echo '<div id="neoweaver-character-field">';
+    echo '<h3>⚔️ NeoWeaver — Field Agent Assignment</h3>';
+
+    if ( empty( $characters ) ) {
+        // Brak postaci — pokaż komunikat zamiast ukrywać sekcję
+        echo '<p class="neoweaver-no-agent" style="color:#cc0000; font-weight:bold;">';
+        echo '⚠️ You have no active Field Agents. ';
+        echo 'Please <a href="/create-character">create a character</a> before purchasing this item.';
+        echo '</p>';
+    } else {
+        $options = [ '' => '— Select your Field Agent —' ];
+        foreach ( $characters as $char ) {
+            $options[ $char['id'] ] = esc_html( $char['name'] );
+        }
+
+        woocommerce_form_field( 'neoweaver_character_id', [
+            'type'     => 'select',
+            'class'    => ['form-row-wide'],
+            'label'    => 'Which Field Agent receives this item?',
+            'required' => true,
+            'options'  => $options,
+        ], $checkout->get_value( 'neoweaver_character_id' ) );
+    }
+
+    echo '</div>';
+} );
