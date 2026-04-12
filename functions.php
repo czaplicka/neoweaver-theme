@@ -129,8 +129,6 @@ add_action( 'widgets_init', function () {
 } );
 
 // ─── 6. NEOWEAVER CHECKOUT (Block Checkout) ───────────────────────────────────
-require_once get_stylesheet_directory() . '/includes/checkout-block.php';
-require_once get_stylesheet_directory() . '/includes/class-neoweaver-checkout-block.php';
 
 // Zapis character_id z session do meta zamówienia
 add_action( 'woocommerce_store_api_checkout_order_processed', function( $order ) {
