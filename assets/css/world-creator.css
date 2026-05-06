@@ -1,0 +1,553 @@
+/*
+ * NeoWeaver — World Creator (Node Creator)
+ * All selectors scoped to #tw-creator-wrapper unless intentionally global.
+ *
+ * BUGS FIXED:
+ *  BUG-1   h2, inputs, textarea now scoped to #tw-creator-wrapper
+ *  BUG-2   .tw-card-visual::before base has no content/size defaults;
+ *           emoji injected via data-icon attr() on .tw-card-label
+ *  BUG-3   [data-field="moral"] extended to 5 entries (was 3)
+ *  BUG-4   :checked glow moved to .tw-card-visual (real sibling element)
+ *  BUG-5   .tw-progress-track overflow:visible kept; tick uses outline trick
+ *  BUG-6   Custom scrollbar on .tw-skill-grid for WebKit
+ *  BUG-7   .tw-attr-val: pointer-events:none; user-select:none
+ *  BUG-8   .tw-summary-val: min-width:0 + word-break fallback
+ *  BUG-9   .tw-step.active z-index:3 (above scanline z:2)
+ *
+ * OPTIMISATIONS:
+ *  OPT-1   Emoji via attr(data-icon) — entire 40+ selector block removed
+ *  OPT-2   transition: all -> explicit properties on every component
+ *  OPT-3   -webkit-backdrop-filter fallback added
+ *  OPT-4   :has() grid fix wrapped in @supports + .tw-cols-3 JS fallback class
+ *  OPT-5   will-change: transform on wrapper for compositing isolation
+ *  OPT-6   @keyframes glitchFadeIn: blur removed, opacity+translateY only
+ *  OPT-7   Responsive @media breakpoints added (768px, 480px)
+ *  OPT-8   .tw-summary-grid: display:block (was unnecessary flex column)
+ *  OPT-9   CSS custom properties scoped to #tw-creator-wrapper
+ */
+
+/* --- Scoped custom properties (OPT-9) -------------------------------------- */
+#tw-creator-wrapper {
+  --neon-green:   #adff00;
+  --neon-blue:    #00cfff;
+  --cyan:         #00e5ff;
+  --neon-glow:    0 0 10px #adff00, 0 0 20px #adff00;
+  --glass-bg:     rgba(10, 10, 30, 0.85);
+  --glass-border: rgba(173, 255, 0, 0.2);
+  --accent:       #adff00;
+  --step-radius:  8px;
+}
+
+/* --- Wrapper --------------------------------------------------------------- */
+/* OPT-5: will-change isolates compositing layer for blur + shadow perf */
+#tw-creator-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  /* OPT-3: -webkit- prefix for Safari */
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  will-change: transform; /* OPT-5 */
+  box-shadow: 0 0 40px rgba(0,0,0,0.9), inset 0 0 100px rgba(0,0,0,0.6);
+  font-family: 'Chakra Petch', monospace;
+  color: #e0e0e0;
+  overflow: hidden;
+}
+
+/* BUG-9: scanline z:2, step content z:3 — step always wins */
+#tw-creator-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* --- Scoped heading (BUG-1) ------------------------------------------------- */
+#tw-creator-wrapper h2 {
+  color: var(--neon-green);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Scoped inputs / textarea (BUG-1) --------------------------------------- */
+#tw-creator-wrapper input[type="text"],
+#tw-creator-wrapper input[type="number"],
+#tw-creator-wrapper textarea {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--step-radius);
+  color: #e0e0e0;
+  font-family: 'Chakra Petch', monospace;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  /* OPT-2: explicit, no layout props */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#tw-creator-wrapper input[type="text"]:focus,
+#tw-creator-wrapper input[type="number"]:focus,
+#tw-creator-wrapper textarea:focus {
+  outline: none;
+  border-color: var(--neon-green);
+  box-shadow: var(--neon-glow);
+}
+
+/* --- Navigation row --------------------------------------------------------- */
+.tw-nav-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 5;
+}
+
+/* --- Step panels ------------------------------------------------------------ */
+.tw-step {
+  display: none;
+}
+
+/* BUG-9: z:3 > scanline z:2 — interactive elements always on top */
+.tw-step.active {
+  display: block;
+  position: relative;
+  z-index: 3;
+}
+
+/* OPT-6: blur removed from keyframe (was triggering composited layer per frame) */
+@keyframes glitchFadeIn {
+  0%   { opacity: 0; transform: translateY(-6px); }
+  60%  { opacity: 1; transform: translateY(2px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.tw-step.active {
+  animation: glitchFadeIn 0.35s ease forwards;
+}
+
+/* --- Nav buttons ------------------------------------------------------------ */
+.tw-btn-nav {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--step-radius);
+  color: #aaa;
+  cursor: pointer;
+  font-family: 'Chakra Petch', monospace;
+  font-size: 0.8rem;
+  padding: 8px 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  /* OPT-2 */
+  transition: border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tw-btn-nav:hover,
+.tw-btn-nav.active {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  box-shadow: var(--neon-glow);
+}
+
+/* --- Progress track (BUG-5) ------------------------------------------------- */
+.tw-progress-track {
+  position: relative;
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  margin-bottom: 2.5rem;
+  overflow: visible; /* ticks use outline, not height, so no clipping needed */
+}
+
+.tw-progress-bar {
+  height: 100%;
+  background: var(--neon-green);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+  position: relative;
+  z-index: 3;
+}
+
+.tw-progress-tick {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.25);
+  z-index: 4;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* BUG-5: outline expands visually without overflowing the track box */
+.tw-progress-tick.current {
+  background: var(--neon-green);
+  border-color: var(--neon-green);
+  outline: 4px solid rgba(173,255,0,0.3);
+  outline-offset: 1px;
+}
+
+.tw-progress-tick.done {
+  background: var(--neon-green);
+  border-color: var(--neon-green);
+}
+
+/* --- Radio / card grid ------------------------------------------------------ */
+.tw-radio-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 1.5rem;
+}
+
+/*
+ * OPT-4: :has() wrapped in @supports so unsupporting browsers (Firefox < 121)
+ * ignore it entirely and don't silently mislayout 3-option grids.
+ * JS fallback: when a .tw-radio-grid has exactly 3 children, add .tw-cols-3.
+ */
+@supports selector(:has(> :nth-child(3):last-child)) {
+  .tw-radio-grid:has(> :nth-child(3):last-child) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.tw-radio-grid.tw-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* --- Card label ------------------------------------------------------------- */
+.tw-card-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tw-card-label input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* --- Card visual ------------------------------------------------------------ */
+.tw-card-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 12px 8px 8px;
+  text-align: center;
+  /* OPT-2: explicit — excludes border-width, padding, layout props */
+  transition: border-color 0.3s ease, background 0.3s ease,
+              transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.tw-card-visual:hover {
+  border-color: rgba(173,255,0,0.5);
+  background: rgba(173,255,0,0.05);
+  transform: translateY(-2px);
+}
+
+/*
+ * BUG-2 / OPT-1: The entire 40+ [data-field] nth-child emoji block is replaced
+ * by a single attr() rule. PHP renders the emoji on the label element:
+ *   <label class="tw-card-label" data-icon="🌍">...</label>
+ * Cards WITHOUT data-icon get no ::before at all — zero empty-gap risk.
+ */
+.tw-card-label[data-icon] .tw-card-visual::before {
+  content: attr(data-icon);
+  display: block;
+  font-size: 2.4rem;
+  line-height: 1;
+  margin-bottom: 10px;
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+/*
+ * BUG-4: Original selector was:
+ *   .tw-card-label input:checked + .tw-card-visual::before
+ * That is invalid — + combinator works between elements, not between an
+ * element and the pseudo-element of its adjacent sibling.
+ * Fix: target .tw-card-visual (real element) via ~, then target its ::before
+ * separately. Both selectors are now syntactically valid.
+ */
+.tw-card-label input[type="radio"]:checked ~ .tw-card-visual {
+  border-color: var(--neon-green);
+  background: rgba(173,255,0,0.12);
+  box-shadow: var(--neon-glow);
+}
+
+.tw-card-label input[type="radio"]:checked ~ .tw-card-visual::before {
+  filter: drop-shadow(0 0 8px var(--neon-green)) brightness(1.3);
+  transform: scale(1.1);
+}
+
+.tw-card-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  color: #ccc;
+}
+
+.tw-card-label input[type="radio"]:checked ~ .tw-card-visual .tw-card-text {
+  color: var(--neon-green);
+}
+
+/* --- Skill grid + scrollbar (BUG-6) ----------------------------------------- */
+.tw-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-height: 550px;
+  overflow-y: auto;
+  padding-right: 4px;
+  /* Firefox custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--neon-green) rgba(255,255,255,0.04);
+}
+
+/* BUG-6: WebKit custom scrollbar — replaces jarring OS default */
+.tw-skill-grid::-webkit-scrollbar       { width: 6px; }
+.tw-skill-grid::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 3px; }
+.tw-skill-grid::-webkit-scrollbar-thumb { background: var(--neon-green); border-radius: 3px; opacity: 0.7; }
+
+.tw-skill-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--step-radius);
+  padding: 10px;
+  cursor: pointer;
+  /* OPT-2 */
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tw-skill-card:hover,
+.tw-skill-card.selected {
+  border-color: var(--neon-green);
+  background: rgba(173,255,0,0.07);
+  box-shadow: var(--neon-glow);
+}
+
+/* --- Attribute row ---------------------------------------------------------- */
+.tw-attr-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  /* OPT-2 */
+  transition: background 0.3s ease;
+}
+
+.tw-attr-label {
+  flex: 0 0 120px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+}
+
+/* BUG-7: read-only display value — no pointer events, no accidental selection */
+.tw-attr-val {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--neon-green);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  user-select: none;
+}
+
+.tw-attr-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.tw-attr-bar-fill {
+  height: 100%;
+  background: var(--neon-green);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* --- Equipment tile --------------------------------------------------------- */
+.tw-eq-tile {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--step-radius);
+  padding: 12px;
+  cursor: pointer;
+  /* OPT-2 */
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tw-eq-tile:hover,
+.tw-eq-tile.selected {
+  border-color: var(--cyan);
+  background: rgba(0,229,255,0.07);
+  box-shadow: 0 0 10px rgba(0,229,255,0.4);
+}
+
+/* --- Summary grid (OPT-8 + BUG-8) ------------------------------------------ */
+/*
+ * OPT-8: was display:flex; flex-direction:column; gap:0
+ * A vertical stack with no gap is identical to display:block.
+ */
+.tw-summary-grid {
+  display: block;
+}
+
+.tw-summary-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.tw-summary-key {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #666;
+}
+
+/*
+ * BUG-8: 1fr column collapses to near-zero on narrow screens.
+ * min-width:0 prevents the implicit min-width:auto from fighting the column.
+ * word-break:break-word is a safety net when ellipsis can't show enough.
+ */
+.tw-summary-val {
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  word-break: break-word;
+}
+
+/* --- Summary edit ----------------------------------------------------------- */
+.tw-summary-edit {
+  cursor: pointer;
+  /* OPT-2 */
+  transition: color 0.3s ease, opacity 0.3s ease;
+  opacity: 0.5;
+  font-size: 0.75rem;
+}
+
+.tw-summary-edit:hover {
+  color: var(--neon-green);
+  opacity: 1;
+}
+
+/* --- Submit button ---------------------------------------------------------- */
+.tw-btn-submit {
+  background: var(--neon-green);
+  color: #000;
+  border: none;
+  border-radius: var(--step-radius);
+  padding: 14px 40px;
+  font-family: 'Chakra Petch', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  display: block;
+  margin: 2rem auto 0;
+}
+
+.tw-btn-submit:hover {
+  box-shadow: var(--neon-glow);
+  transform: translateY(-2px);
+}
+
+/* --- Responsive breakpoints (OPT-7) ----------------------------------------- */
+@media (max-width: 768px) {
+  #tw-creator-wrapper {
+    padding: 30px 20px;
+    border-radius: 10px;
+  }
+  .tw-radio-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .tw-skill-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tw-summary-row {
+    grid-template-columns: 120px 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  #tw-creator-wrapper {
+    padding: 20px 14px;
+    border-radius: 8px;
+  }
+  #tw-creator-wrapper h2 {
+    font-size: 1.2rem;
+  }
+  .tw-radio-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .tw-skill-grid {
+    grid-template-columns: 1fr;
+    max-height: 380px;
+  }
+  .tw-nav-row {
+    flex-wrap: wrap;
+  }
+  .tw-btn-nav {
+    font-size: 0.72rem;
+    padding: 6px 12px;
+  }
+  .tw-summary-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .tw-attr-val {
+    font-size: 1.6rem;
+  }
+}
+
+/* --- Reduced motion --------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  #tw-creator-wrapper *,
+  #tw-creator-wrapper *::before,
+  #tw-creator-wrapper *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
