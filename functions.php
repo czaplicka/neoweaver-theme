@@ -21,6 +21,15 @@ add_action( 'wp_enqueue_scripts', function () {
     wp_enqueue_script( 'neo-swiper-init', $base_url . '/assets/js/neo-swiper.js', [ 'neo-swiper-core' ], $version, true );
 }, 20 );
 
+function neoweaver_admin_styles() {
+    wp_enqueue_style(
+        'neoweaver-admin',
+        get_template_directory_uri() . '/admin-style.css',
+        [],
+        '1.0.0'
+    );
+}
+add_action( 'admin_enqueue_scripts', 'neoweaver_admin_styles' );
 // ─── 3. CONDITIONAL ASSET: neo-os.js ─────────────────────────────────────────
 add_action( 'wp', function () {
     if (
