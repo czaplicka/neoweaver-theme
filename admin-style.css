@@ -1,0 +1,186 @@
+/* NeoWeaver Admin Panel Styles */
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&display=swap');
+
+/* --- Base & font --- */
+#wpcontent,
+#wpfooter,
+#wpadminbar,
+.wrap,
+body.wp-admin {
+    font-family: 'Chakra Petch', monospace !important;
+    background-color: #0a0a0a !important;
+    color: #c8c8c8 !important;
+}
+
+/* --- Topbar (admin bar) --- */
+#wpadminbar {
+    background: #111111 !important;
+    border-bottom: 1px solid #adff00 !important;
+}
+#wpadminbar .ab-item,
+#wpadminbar .ab-label,
+#wpadminbar a {
+    color: #adff00 !important;
+}
+#wpadminbar li:hover > a,
+#wpadminbar .ab-top-menu > li:hover > .ab-item {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+/* --- Lewe menu --- */
+#adminmenu,
+#adminmenuback,
+#adminmenushadow {
+    background: #111111 !important;
+}
+#adminmenu .wp-menu-arrow,
+#adminmenu .wp-menu-arrow div {
+    background: #adff00 !important;
+}
+#adminmenu a,
+#adminmenu .wp-menu-name {
+    color: #999999 !important;
+}
+#adminmenu a:hover,
+#adminmenu li.menu-top:hover > a {
+    color: #adff00 !important;
+    background: #1a1a1a !important;
+}
+#adminmenu li.current > a,
+#adminmenu .current .wp-menu-name,
+#adminmenu .wp-has-current-submenu .wp-submenu-head {
+    color: #000000 !important;
+    background: #adff00 !important;
+}
+#adminmenu .wp-submenu {
+    background: #161616 !important;
+}
+#adminmenu .wp-submenu a {
+    color: #888888 !important;
+}
+#adminmenu .wp-submenu a:hover,
+#adminmenu .wp-submenu li.current a {
+    color: #adff00 !important;
+}
+
+/* --- Główna treść --- */
+#wpcontent {
+    background: #0d0d0d !important;
+}
+.wrap h1,
+.wrap h2 {
+    color: #adff00 !important;
+    font-family: 'Chakra Petch', monospace !important;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.wp-header-end {
+    border-bottom: 1px solid #1f1f1f;
+}
+
+/* --- Karty / postboxes --- */
+.postbox,
+#poststuff .postbox {
+    background: #111111 !important;
+    border: 1px solid #222222 !important;
+    border-radius: 4px;
+}
+.postbox h2,
+.postbox h3,
+.postbox .hndle {
+    color: #adff00 !important;
+    border-bottom: 1px solid #1e1e1e !important;
+    background: #141414 !important;
+}
+
+/* --- Tabele (lista postów, użytkowników itd.) --- */
+.wp-list-table th,
+.wp-list-table thead th {
+    background: #141414 !important;
+    color: #adff00 !important;
+    border-bottom: 1px solid #2a2a2a !important;
+}
+.wp-list-table td,
+.wp-list-table tr {
+    background: #111111 !important;
+    color: #c8c8c8 !important;
+    border-bottom: 1px solid #1a1a1a !important;
+}
+.wp-list-table tr:hover td {
+    background: #161616 !important;
+}
+.wp-list-table a {
+    color: #adff00 !important;
+}
+
+/* --- Przyciski --- */
+.button-primary {
+    background: #adff00 !important;
+    border-color: #adff00 !important;
+    color: #000000 !important;
+    font-family: 'Chakra Petch', monospace !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.button-primary:hover {
+    background: #c8ff40 !important;
+    border-color: #c8ff40 !important;
+}
+.button-secondary,
+.button {
+    background: #1a1a1a !important;
+    border-color: #333333 !important;
+    color: #adff00 !important;
+}
+.button:hover {
+    border-color: #adff00 !important;
+    color: #ffffff !important;
+}
+
+/* --- Formularze / inputy --- */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="url"],
+textarea,
+select,
+.regular-text {
+    background: #0a0a0a !important;
+    border: 1px solid #2a2a2a !important;
+    color: #c8c8c8 !important;
+    border-radius: 3px;
+}
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #adff00 !important;
+    box-shadow: 0 0 0 1px #adff00 !important;
+    outline: none;
+}
+
+/* --- Notices --- */
+.notice-success,
+.updated {
+    border-left-color: #adff00 !important;
+    background: #0d1a00 !important;
+    color: #adff00 !important;
+}
+.notice-error,
+.error {
+    border-left-color: #ff4040 !important;
+    background: #1a0000 !important;
+}
+.notice-warning {
+    border-left-color: #ffaa00 !important;
+    background: #1a1000 !important;
+}
+
+/* --- Footer --- */
+#wpfooter {
+    border-top: 1px solid #1a1a1a !important;
+    color: #444444 !important;
+}
