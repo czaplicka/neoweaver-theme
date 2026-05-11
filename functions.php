@@ -219,7 +219,6 @@ add_action( 'woocommerce_order_status_completed', function( $order_id ) {
         }
     }
 } );
-<?php
 add_action( 'after_setup_theme', 'neoweaver_register_footer_menus' );
 
 function neoweaver_register_footer_menus() {
@@ -232,7 +231,6 @@ function neoweaver_register_footer_menus() {
             'neo_footer_legal'  => __( 'Neo Footer - Legal / Extra', 'neoweaver' ),
         )
     );
-    <?php
 function neoweaver_footer_menu( $location ) {
     wp_nav_menu(
         array(
@@ -245,7 +243,6 @@ function neoweaver_footer_menu( $location ) {
     );
 }
 }
-<?php
 function neoweaver_header_menu() {
     wp_nav_menu(
         array(
