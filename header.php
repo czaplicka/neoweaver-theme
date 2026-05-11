@@ -16,14 +16,7 @@
 
         <nav id="neo-main-nav" class="neo-dropdown">
             <div class="neo-scanline"></div>
-            <ul class="neo-menu-list">
-                <li class="neo-menu-item"><a href="<?php echo esc_url(home_url('/agents/')); ?>"><span class="neo-shortcut">A</span>GENTS</a></li>
-                <li class="neo-menu-item"><a href="<?php echo esc_url(home_url('/nodes/')); ?>"><span class="neo-shortcut">N</span>ODES</a></li>
-                <li class="neo-menu-item"><a href="<?php echo esc_url(home_url('/deployments/')); ?>"><span class="neo-shortcut">D</span>EPLOS</a></li>
-                <li class="neo-menu-item neo-separator"></li>
-                <li class="neo-menu-item"><a href="<?php echo esc_url(home_url('/terminal/')); ?>"><span class="neo-shortcut">T</span>ERMINAL</a></li>
-                <li class="neo-menu-item neo-highlight"><a href="<?php echo esc_url(home_url('/shop/')); ?>"><span class="neo-shortcut">C</span>REDIT_UP</a></li>
-            </ul>
+            <?php neoweaver_header_menu(); ?>
         </nav>
     </div>
 
@@ -35,13 +28,13 @@
         </a>
     </div>
 
-<div class="neo-terminal-meta">
-    <span class="neo-label">SYNC:</span>
-    <span id="neo-sync" class="neo-value">98.4%</span>
-</div>
+    <div class="neo-terminal-meta">
+        <span class="neo-label">SYNC:</span>
+        <span id="neo-sync" class="neo-value">98.4%</span>
+    </div>
 
-<div class="neo-terminal-meta">
-    <span class="neo-label">TIME:</span>
-    <span id="neo-clock" class="neo-value-clock">00:00:00</span>
-</div>
+    <div class="neo-terminal-meta">
+        <span class="neo-label">TIME:</span>
+        <span id="neo-clock" class="neo-value-clock">00:00:00</span>
+    </div>
 </header>
