@@ -1,186 +1,718 @@
-/* NeoWeaver Admin Panel Styles */
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&display=swap');
+/* =========================================================
+   NeoWeaver Admin Theme
+   Hard Analog Cyberpunk / Techno-Magic WP Admin Skin
+   Font: Chakra Petch
+   Accent: #adff00
+   ========================================================= */
 
-/* --- Base & font --- */
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --nw-bg: #070909;
+    --nw-bg-alt: #0b0f0f;
+    --nw-panel: #101414;
+    --nw-panel-2: #131919;
+    --nw-panel-3: #171d1d;
+    --nw-border: #1f2929;
+    --nw-border-strong: #2d3838;
+    --nw-text: #c7d0cb;
+    --nw-text-soft: #8e9994;
+    --nw-text-dim: #5f6964;
+    --nw-accent: #adff00;
+    --nw-accent-soft: #d2ff68;
+    --nw-accent-glow: rgba(173, 255, 0, 0.18);
+    --nw-accent-strong-glow: rgba(173, 255, 0, 0.32);
+    --nw-danger: #ff5454;
+    --nw-warning: #ffb340;
+    --nw-info: #67e8f9;
+    --nw-shadow: 0 0 0 1px rgba(173, 255, 0, 0.05), 0 8px 30px rgba(0, 0, 0, 0.35);
+    --nw-radius: 6px;
+}
+
+/* =========================================================
+   Base
+   ========================================================= */
+
+html,
+body.wp-admin,
+#wpwrap,
 #wpcontent,
 #wpfooter,
-#wpadminbar,
+#wpbody,
 .wrap,
-body.wp-admin {
+.postbox,
+input,
+select,
+textarea,
+button,
+.button {
     font-family: 'Chakra Petch', monospace !important;
-    background-color: #0a0a0a !important;
-    color: #c8c8c8 !important;
 }
 
-/* --- Topbar (admin bar) --- */
-#wpadminbar {
-    background: #111111 !important;
-    border-bottom: 1px solid #adff00 !important;
+body.wp-admin {
+    background:
+        radial-gradient(circle at top right, rgba(173,255,0,0.04), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(173,255,0,0.03), transparent 18%),
+        linear-gradient(180deg, #090c0c 0%, #060707 100%) !important;
+    color: var(--nw-text) !important;
 }
+
+#wpcontent,
+#wpfooter,
+.wrap {
+    color: var(--nw-text) !important;
+}
+
+a {
+    color: var(--nw-accent);
+    transition: all 0.18s ease;
+}
+
+a:hover,
+a:focus {
+    color: #ffffff;
+}
+
+.notice a,
+.wp-core-ui .button-link {
+    color: var(--nw-accent) !important;
+}
+
+::selection {
+    background: var(--nw-accent);
+    color: #000;
+}
+
+/* =========================================================
+   Admin bar
+   ========================================================= */
+
+#wpadminbar {
+    background:
+        linear-gradient(180deg, #0f1313 0%, #0b0f0f 100%) !important;
+    border-bottom: 1px solid rgba(173,255,0,0.35) !important;
+    box-shadow: 0 0 14px rgba(173,255,0,0.06);
+}
+
 #wpadminbar .ab-item,
 #wpadminbar .ab-label,
-#wpadminbar a {
-    color: #adff00 !important;
+#wpadminbar a,
+#wpadminbar .quicklinks .menupop ul li a {
+    color: var(--nw-accent) !important;
+    font-family: 'Chakra Petch', monospace !important;
 }
+
 #wpadminbar li:hover > a,
-#wpadminbar .ab-top-menu > li:hover > .ab-item {
-    background: #1a1a1a !important;
+#wpadminbar li.hover > .ab-item,
+#wpadminbar .ab-top-menu > li:hover > .ab-item,
+#wpadminbar .ab-top-menu > li.hover > .ab-item {
+    background: #161c1c !important;
     color: #ffffff !important;
 }
 
-/* --- Lewe menu --- */
-#adminmenu,
-#adminmenuback,
-#adminmenushadow {
-    background: #111111 !important;
+#wpadminbar .menupop .ab-sub-wrapper,
+#wpadminbar .shortlink-input {
+    background: #101414 !important;
+    border: 1px solid var(--nw-border) !important;
 }
+
+/* =========================================================
+   Sidebar menu
+   ========================================================= */
+
+#adminmenuwrap,
+#adminmenuback,
+#adminmenu,
+#adminmenushadow {
+    background: linear-gradient(180deg, #0d1010 0%, #0a0d0d 100%) !important;
+}
+
+#adminmenu {
+    padding-top: 10px;
+}
+
+#adminmenu .wp-submenu {
+    background: #121717 !important;
+    border-top: 1px solid rgba(173,255,0,0.05);
+    border-bottom: 1px solid rgba(173,255,0,0.05);
+}
+
+#adminmenu li.menu-top {
+    margin: 2px 8px;
+}
+
+#adminmenu li.menu-top > a {
+    border-radius: 6px;
+    transition: all 0.18s ease;
+}
+
+#adminmenu a,
+#adminmenu .wp-submenu a,
+#adminmenu .wp-menu-name,
+#adminmenu .wp-submenu-head {
+    color: var(--nw-text-soft) !important;
+}
+
+#adminmenu .wp-menu-image:before {
+    color: #73807a !important;
+    transition: all 0.18s ease;
+}
+
 #adminmenu .wp-menu-arrow,
 #adminmenu .wp-menu-arrow div {
-    background: #adff00 !important;
+    background: transparent !important;
 }
-#adminmenu a,
-#adminmenu .wp-menu-name {
-    color: #999999 !important;
+
+#adminmenu li.menu-top:hover > a,
+#adminmenu li.opensub > a,
+#adminmenu li > a:hover {
+    background: #151b1b !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 0 0 1px rgba(173,255,0,0.08);
 }
-#adminmenu a:hover,
-#adminmenu li.menu-top:hover > a {
-    color: #adff00 !important;
-    background: #1a1a1a !important;
+
+#adminmenu li.menu-top:hover > a .wp-menu-name,
+#adminmenu li.opensub > a .wp-menu-name,
+#adminmenu li > a:hover .wp-menu-name,
+#adminmenu li.menu-top:hover > a .wp-menu-image:before,
+#adminmenu li.opensub > a .wp-menu-image:before,
+#adminmenu li > a:hover .wp-menu-image:before {
+    color: var(--nw-accent) !important;
 }
+
+/* ACTIVE / CURRENT */
 #adminmenu li.current > a,
+#adminmenu li.current > a:hover,
+#adminmenu li.current > a:focus,
+#adminmenu .wp-has-current-submenu > a,
+#adminmenu .wp-has-current-submenu > a:hover,
+#adminmenu .wp-has-current-submenu > a:focus {
+    background:
+        linear-gradient(90deg, #adff00 0%, #cfff4f 100%) !important;
+    color: #000000 !important;
+    border-radius: 6px;
+    box-shadow:
+        0 0 0 1px rgba(173,255,0,0.35),
+        0 0 18px rgba(173,255,0,0.14);
+}
+
+#adminmenu li.current > a .wp-menu-name,
+#adminmenu li.current > a .wp-menu-image:before,
+#adminmenu li.current > a .wp-menu-arrow:before,
+#adminmenu li.current > a .wp-menu-arrow div,
+#adminmenu .wp-has-current-submenu > a .wp-menu-name,
+#adminmenu .wp-has-current-submenu > a .wp-menu-image:before,
+#adminmenu .wp-has-current-submenu > a .wp-menu-arrow:before,
+#adminmenu .wp-has-current-submenu > a .wp-menu-arrow div,
 #adminmenu .current .wp-menu-name,
 #adminmenu .wp-has-current-submenu .wp-submenu-head {
     color: #000000 !important;
-    background: #adff00 !important;
-}
-#adminmenu .wp-submenu {
-    background: #161616 !important;
-}
-#adminmenu .wp-submenu a {
-    color: #888888 !important;
-}
-#adminmenu .wp-submenu a:hover,
-#adminmenu .wp-submenu li.current a {
-    color: #adff00 !important;
 }
 
-/* --- Główna treść --- */
-#wpcontent {
-    background: #0d0d0d !important;
+#adminmenu .wp-has-current-submenu .wp-submenu {
+    background: #121717 !important;
 }
+
+#adminmenu .wp-has-current-submenu .wp-submenu a {
+    color: #96a29c !important;
+}
+
+#adminmenu .wp-has-current-submenu .wp-submenu a:hover,
+#adminmenu .wp-has-current-submenu .wp-submenu li.current a,
+#adminmenu .wp-has-current-submenu .wp-submenu li.current a:focus {
+    color: var(--nw-accent) !important;
+    background: transparent !important;
+}
+
+#adminmenu .wp-submenu li.current a {
+    color: var(--nw-accent) !important;
+}
+
+#adminmenu .awaiting-mod,
+#adminmenu .update-plugins {
+    background: #1f2f00 !important;
+    color: var(--nw-accent) !important;
+    border: 1px solid rgba(173,255,0,0.18);
+}
+
+/* Collapse button */
+#collapse-menu {
+    color: var(--nw-text-soft) !important;
+}
+
+#collapse-menu:hover {
+    color: var(--nw-accent) !important;
+}
+
+/* =========================================================
+   Main content
+   ========================================================= */
+
+#wpcontent {
+    background:
+        linear-gradient(180deg, rgba(173,255,0,0.015) 0%, rgba(173,255,0,0) 120px),
+        #0a0d0d !important;
+    min-height: calc(100vh - 32px);
+}
+
+.wrap h1,
+.wrap h2,
+.wrap h3,
+.wrap .page-title-action {
+    font-family: 'Chakra Petch', monospace !important;
+}
+
 .wrap h1,
 .wrap h2 {
-    color: #adff00 !important;
-    font-family: 'Chakra Petch', monospace !important;
+    color: var(--nw-accent) !important;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
-.wp-header-end {
-    border-bottom: 1px solid #1f1f1f;
+
+.wrap h3,
+.subtitle,
+.subsubsub,
+.description,
+p.description,
+.form-table th,
+.form-wrap p {
+    color: var(--nw-text-soft) !important;
 }
 
-/* --- Karty / postboxes --- */
-.postbox,
-#poststuff .postbox {
-    background: #111111 !important;
-    border: 1px solid #222222 !important;
-    border-radius: 4px;
+.wp-header-end {
+    border-bottom: 1px solid #1b2323 !important;
 }
+
+/* =========================================================
+   Cards / boxes
+   ========================================================= */
+
+.postbox,
+#poststuff .postbox,
+.metabox-holder .postbox,
+.stuffbox {
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0)),
+        var(--nw-panel) !important;
+    border: 1px solid var(--nw-border) !important;
+    border-radius: var(--nw-radius) !important;
+    box-shadow: var(--nw-shadow);
+    overflow: hidden;
+}
+
+.postbox .inside,
+.stuffbox .inside {
+    color: var(--nw-text) !important;
+}
+
+.postbox > .postbox-header,
+.postbox .hndle,
 .postbox h2,
 .postbox h3,
-.postbox .hndle {
-    color: #adff00 !important;
-    border-bottom: 1px solid #1e1e1e !important;
-    background: #141414 !important;
-}
-
-/* --- Tabele (lista postów, użytkowników itd.) --- */
-.wp-list-table th,
-.wp-list-table thead th {
-    background: #141414 !important;
-    color: #adff00 !important;
-    border-bottom: 1px solid #2a2a2a !important;
-}
-.wp-list-table td,
-.wp-list-table tr {
-    background: #111111 !important;
-    color: #c8c8c8 !important;
-    border-bottom: 1px solid #1a1a1a !important;
-}
-.wp-list-table tr:hover td {
-    background: #161616 !important;
-}
-.wp-list-table a {
-    color: #adff00 !important;
-}
-
-/* --- Przyciski --- */
-.button-primary {
-    background: #adff00 !important;
-    border-color: #adff00 !important;
-    color: #000000 !important;
-    font-family: 'Chakra Petch', monospace !important;
-    font-weight: 600;
-    text-transform: uppercase;
+.stuffbox h3 {
+    background: linear-gradient(180deg, #151a1a 0%, #101414 100%) !important;
+    color: var(--nw-accent) !important;
+    border-bottom: 1px solid #1c2424 !important;
     letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
-.button-primary:hover {
-    background: #c8ff40 !important;
-    border-color: #c8ff40 !important;
+
+/* =========================================================
+   Tables
+   ========================================================= */
+
+.wp-list-table,
+.widefat,
+.striped > tbody > :nth-child(odd),
+.plugins .active td,
+.plugins .active th {
+    background: var(--nw-panel) !important;
+    color: var(--nw-text) !important;
 }
-.button-secondary,
-.button {
-    background: #1a1a1a !important;
-    border-color: #333333 !important;
-    color: #adff00 !important;
+
+.wp-list-table th,
+.wp-list-table thead th,
+.widefat thead td,
+.widefat thead th,
+.widefat tfoot td,
+.widefat tfoot th {
+    background: #141919 !important;
+    color: var(--nw-accent) !important;
+    border-bottom: 1px solid #273030 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
-.button:hover {
-    border-color: #adff00 !important;
+
+.wp-list-table td,
+.wp-list-table tr,
+.widefat td,
+.widefat th {
+    background: #101414 !important;
+    color: var(--nw-text) !important;
+    border-bottom: 1px solid #192121 !important;
+}
+
+.wp-list-table tbody tr:hover td,
+.widefat tbody tr:hover td {
+    background: #141a1a !important;
+}
+
+.wp-list-table a,
+.widefat a,
+.row-title {
+    color: var(--nw-accent) !important;
+}
+
+.wp-list-table a:hover,
+.widefat a:hover,
+.row-title:hover {
     color: #ffffff !important;
 }
 
-/* --- Formularze / inputy --- */
+.tablenav,
+.tablenav-pages,
+.displaying-num {
+    color: var(--nw-text-soft) !important;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.wp-core-ui .button,
+.wp-core-ui .button-secondary,
+.wp-core-ui .button-primary,
+button.button {
+    border-radius: 4px !important;
+    font-family: 'Chakra Petch', monospace !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.18s ease !important;
+    box-shadow: none !important;
+}
+
+.wp-core-ui .button,
+.wp-core-ui .button-secondary,
+button.button {
+    background: #161c1c !important;
+    border: 1px solid #2b3434 !important;
+    color: var(--nw-accent) !important;
+}
+
+.wp-core-ui .button:hover,
+.wp-core-ui .button-secondary:hover,
+button.button:hover {
+    background: #1b2222 !important;
+    border-color: var(--nw-accent) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(173,255,0,0.06) !important;
+}
+
+.wp-core-ui .button-primary {
+    background: linear-gradient(90deg, #adff00 0%, #d2ff68 100%) !important;
+    border: 1px solid #adff00 !important;
+    color: #000000 !important;
+    font-weight: 700;
+}
+
+.wp-core-ui .button-primary:hover,
+.wp-core-ui .button-primary:focus {
+    background: linear-gradient(90deg, #c8ff40 0%, #e2ff91 100%) !important;
+    border-color: #d2ff68 !important;
+    color: #000000 !important;
+    box-shadow: 0 0 0 4px rgba(173,255,0,0.12) !important;
+}
+
+/* Delete / destructive links */
+.submitdelete,
+.deletion,
+a.submitdelete {
+    color: #ff6b6b !important;
+}
+
+.submitdelete:hover,
+.deletion:hover,
+a.submitdelete:hover {
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   Forms
+   ========================================================= */
+
 input[type="text"],
+input[type="search"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
 input[type="url"],
+input[type="tel"],
+input[type="date"],
+input[type="datetime-local"],
 textarea,
 select,
-.regular-text {
-    background: #0a0a0a !important;
-    border: 1px solid #2a2a2a !important;
-    color: #c8c8c8 !important;
-    border-radius: 3px;
+.regular-text,
+.large-text,
+.code {
+    background: #0a0e0e !important;
+    border: 1px solid #293232 !important;
+    color: var(--nw-text) !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02) !important;
 }
+
+input::placeholder,
+textarea::placeholder {
+    color: #66706c !important;
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+    border-color: #3b4747 !important;
+}
+
 input:focus,
 textarea:focus,
-select:focus {
-    border-color: #adff00 !important;
-    box-shadow: 0 0 0 1px #adff00 !important;
-    outline: none;
+select:focus,
+.wp-core-ui select:focus {
+    border-color: var(--nw-accent) !important;
+    box-shadow:
+        0 0 0 1px var(--nw-accent),
+        0 0 0 4px rgba(173,255,0,0.08) !important;
+    outline: none !important;
+    color: #f2f7f3 !important;
 }
 
-/* --- Notices --- */
+/* Fix selected option readability */
+select option {
+    background: #0f1414 !important;
+    color: var(--nw-text) !important;
+}
+
+select option:checked,
+select option:hover,
+select option:focus,
+select[multiple] option:checked {
+    background: var(--nw-accent) !important;
+    color: #000000 !important;
+}
+
+/* Some browsers use this for selected state */
+select:has(option:checked) {
+    color: var(--nw-text) !important;
+}
+
+/* Checkbox / radio */
+input[type="checkbox"],
+input[type="radio"] {
+    background: #0d1111 !important;
+    border-color: #344040 !important;
+}
+
+input[type="checkbox"]:checked::before {
+    color: var(--nw-accent) !important;
+}
+
+input[type="radio"]:checked::before {
+    background: var(--nw-accent) !important;
+}
+
+/* =========================================================
+   Notices
+   ========================================================= */
+
+.notice,
+.updated,
+.error,
+.update-nag {
+    border-radius: 0 6px 6px 0;
+    border: 1px solid #1f2929 !important;
+    box-shadow: var(--nw-shadow);
+}
+
 .notice-success,
 .updated {
-    border-left-color: #adff00 !important;
-    background: #0d1a00 !important;
-    color: #adff00 !important;
-}
-.notice-error,
-.error {
-    border-left-color: #ff4040 !important;
-    background: #1a0000 !important;
-}
-.notice-warning {
-    border-left-color: #ffaa00 !important;
-    background: #1a1000 !important;
+    border-left: 4px solid var(--nw-accent) !important;
+    background: linear-gradient(90deg, rgba(173,255,0,0.10), rgba(173,255,0,0.02)) !important;
+    color: #dfffb1 !important;
 }
 
-/* --- Footer --- */
+.notice-success p,
+.updated p {
+    color: #dfffb1 !important;
+}
+
+.notice-error,
+.error {
+    border-left: 4px solid var(--nw-danger) !important;
+    background: linear-gradient(90deg, rgba(255,84,84,0.10), rgba(255,84,84,0.02)) !important;
+    color: #ffb1b1 !important;
+}
+
+.notice-warning,
+.update-nag {
+    border-left: 4px solid var(--nw-warning) !important;
+    background: linear-gradient(90deg, rgba(255,179,64,0.10), rgba(255,179,64,0.02)) !important;
+    color: #ffd59a !important;
+}
+
+.notice-info {
+    border-left: 4px solid var(--nw-info) !important;
+    background: linear-gradient(90deg, rgba(103,232,249,0.10), rgba(103,232,249,0.02)) !important;
+    color: #b8f7ff !important;
+}
+
+/* =========================================================
+   Tabs / nav / misc UI
+   ========================================================= */
+
+.nav-tab-wrapper,
+.wrap h2.nav-tab-wrapper,
+h1.nav-tab-wrapper {
+    border-bottom: 1px solid #1f2929 !important;
+}
+
+.nav-tab {
+    background: #131818 !important;
+    border: 1px solid #253030 !important;
+    color: var(--nw-text-soft) !important;
+    margin-right: 6px !important;
+}
+
+.nav-tab:hover {
+    color: var(--nw-accent) !important;
+    background: #171d1d !important;
+}
+
+.nav-tab-active,
+.nav-tab-active:hover,
+.nav-tab-active:focus {
+    background: var(--nw-accent) !important;
+    border-color: var(--nw-accent) !important;
+    color: #000000 !important;
+}
+
+.subsubsub a {
+    color: var(--nw-text-soft) !important;
+}
+
+.subsubsub a.current {
+    color: var(--nw-accent) !important;
+    font-weight: 600;
+}
+
+/* Code editors / pre */
+code,
+pre {
+    background: #0b0f0f !important;
+    color: #d6ffd1 !important;
+    border: 1px solid #202828 !important;
+    border-radius: 4px;
+}
+
+/* Dashboard widgets */
+.dashboard-widget,
+#dashboard-widgets .postbox-container .empty-container,
+#welcome-panel {
+    background: var(--nw-panel) !important;
+    border: 1px solid var(--nw-border) !important;
+    color: var(--nw-text) !important;
+}
+
+#welcome-panel {
+    box-shadow: var(--nw-shadow);
+}
+
+/* Links in plugin/action rows */
+.plugins .active th.check-column,
+.plugins .active td,
+.plugins .active th,
+tr.active td,
+tr.active th {
+    background: #101514 !important;
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+
 #wpfooter {
-    border-top: 1px solid #1a1a1a !important;
-    color: #444444 !important;
+    background: transparent !important;
+    border-top: 1px solid #181f1f !important;
+    color: #48514d !important;
+}
+
+/* =========================================================
+   Accessibility / focus polish
+   ========================================================= */
+
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+.button:focus {
+    outline: none !important;
+}
+
+.wp-core-ui .button:focus,
+.wp-core-ui .button-primary:focus,
+.wp-core-ui .button-secondary:focus {
+    box-shadow: 0 0 0 1px var(--nw-accent), 0 0 0 4px rgba(173,255,0,0.10) !important;
+}
+
+/* =========================================================
+   Tiny cyber details
+   ========================================================= */
+
+.postbox,
+.wp-list-table,
+.widefat,
+.notice,
+.button,
+input,
+select,
+textarea {
+    position: relative;
+}
+
+.postbox::after,
+.wp-list-table::after,
+.widefat::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(173,255,0,0.015);
+    border-radius: inherit;
+}
+
+/* subtle scanline feel */
+#wpcontent::before {
+    content: "";
+    position: fixed;
+    inset: 32px 0 0 160px;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.015) 0px,
+        rgba(255,255,255,0.015) 1px,
+        transparent 2px,
+        transparent 4px
+    );
+    opacity: 0.03;
+    mix-blend-mode: soft-light;
+    z-index: 0;
+}
+
+/* Keep content above the scanline layer */
+#wpbody-content,
+.wrap,
+.metabox-holder,
+.notice,
+.update-nag {
+    position: relative;
+    z-index: 1;
 }
