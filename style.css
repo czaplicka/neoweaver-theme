@@ -1624,3 +1624,18 @@ body .neo-terminal-container::after {
     content: "> ";
     color: var(--neo-accent, #adff00);
 }
+.neo-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.neo-menu-list > li {
+    margin: 0;
+    padding: 0;
+}
+
+.neo-menu-list > li > a {
+    display: block;
+    padding: 0.6rem 0.8rem;
+}
