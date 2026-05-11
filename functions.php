@@ -219,3 +219,28 @@ add_action( 'woocommerce_order_status_completed', function( $order_id ) {
         }
     }
 } );
+<?php
+add_action( 'after_setup_theme', 'neoweaver_register_footer_menus' );
+
+function neoweaver_register_footer_menus() {
+    register_nav_menus(
+        array(
+            'neo_footer_useful' => __( 'Neo Footer - Useful Links', 'neoweaver' ),
+            'neo_footer_game'   => __( 'Neo Footer - Game Menu', 'neoweaver' ),
+            'neo_footer_nde'    => __( 'Neo Footer - NDE System', 'neoweaver' ),
+            'neo_footer_legal'  => __( 'Neo Footer - Legal / Extra', 'neoweaver' ),
+        )
+    );
+    <?php
+function neoweaver_footer_menu( $location ) {
+    wp_nav_menu(
+        array(
+            'theme_location' => $location,
+            'container'      => false,
+            'menu_class'     => 'neo-footer-list',
+            'fallback_cb'    => false,
+            'depth'          => 1,
+        )
+    );
+}
+}
