@@ -225,6 +225,7 @@ add_action( 'after_setup_theme', 'neoweaver_register_footer_menus' );
 function neoweaver_register_footer_menus() {
     register_nav_menus(
         array(
+            'neo_header_menu'   => __( 'Neo Header Menu', 'neoweaver' ),
             'neo_footer_useful' => __( 'Neo Footer - Useful Links', 'neoweaver' ),
             'neo_footer_game'   => __( 'Neo Footer - Game Menu', 'neoweaver' ),
             'neo_footer_nde'    => __( 'Neo Footer - NDE System', 'neoweaver' ),
@@ -243,4 +244,18 @@ function neoweaver_footer_menu( $location ) {
         )
     );
 }
+}
+<?php
+function neoweaver_header_menu() {
+    wp_nav_menu(
+        array(
+            'theme_location' => 'neo_header_menu',
+            'container'      => false,
+            'menu_id'        => '',
+            'menu_class'     => 'neo-menu-list',
+            'fallback_cb'    => false,
+            'depth'          => 1,
+            'items_wrap'     => '<ul class="%2$s">%3$s</ul>',
+        )
+    );
 }
