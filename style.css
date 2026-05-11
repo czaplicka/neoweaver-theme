@@ -1639,3 +1639,232 @@ body .neo-terminal-container::after {
     display: block;
     padding: 0.6rem 0.8rem;
 }
+/* =========================================================
+   NeoWeaver Header Responsive Fix
+   ========================================================= */
+
+/* desktop / global */
+.neo-terminal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    padding: 10px 18px !important;
+}
+
+.neo-menu-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+.neo-system-id {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 220px;
+    min-width: 0;
+    text-align: center;
+}
+
+.neo-brand-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+}
+
+.neo-logo {
+    display: block;
+    width: clamp(120px, 18vw, 190px);
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.neo-terminal-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: clamp(0.72rem, 0.25vw + 0.68rem, 0.84rem);
+}
+
+.neo-terminal-meta .neo-label {
+    color: var(--neo-text-dim);
+}
+
+.neo-terminal-meta .neo-value,
+.neo-terminal-meta .neo-value-clock {
+    min-width: 62px;
+    text-align: right;
+}
+
+.neo-menu-trigger {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    line-height: 1.1;
+}
+
+.neo-menu-label {
+    display: inline-block;
+}
+
+/* dropdown */
+#neo-main-nav.neo-dropdown {
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 220px;
+    max-width: min(320px, calc(100vw - 32px));
+    z-index: 1200;
+}
+
+.neo-menu-list li a {
+    padding: 0.7rem 0.95rem;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+/* medium desktop / tablet */
+@media (max-width: 980px) {
+    .neo-terminal-header {
+        padding: 10px 14px !important;
+        gap: 10px 14px;
+    }
+
+    .neo-logo {
+        width: clamp(108px, 20vw, 160px);
+    }
+
+    .neo-terminal-meta {
+        font-size: 0.76rem;
+    }
+
+    .neo-terminal-meta .neo-value,
+    .neo-terminal-meta .neo-value-clock {
+        min-width: 56px;
+    }
+}
+
+/* tablet and mobile layout */
+@media (max-width: 768px) {
+    .neo-terminal-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "menu meta1"
+            "brand brand"
+            "meta2 meta2";
+        align-items: center;
+        padding: 10px 12px !important;
+        gap: 10px 12px;
+    }
+
+    .neo-menu-container {
+        grid-area: menu;
+        justify-self: start;
+    }
+
+    .neo-system-id {
+        grid-area: brand;
+        justify-self: center;
+        width: 100%;
+    }
+
+    .neo-terminal-header > .neo-terminal-meta:nth-of-type(1) {
+        grid-area: meta1;
+        justify-self: end;
+    }
+
+    .neo-terminal-header > .neo-terminal-meta:nth-of-type(2) {
+        grid-area: meta2;
+        justify-self: center;
+    }
+
+    .neo-logo {
+        width: clamp(100px, 34vw, 150px);
+    }
+
+    .neo-menu-trigger {
+        padding: 8px 10px;
+        font-size: 0.76rem;
+    }
+
+    .neo-menu-label {
+        font-size: 0.72rem;
+    }
+
+    .neo-terminal-meta {
+        font-size: 0.72rem;
+    }
+
+    #neo-main-nav.neo-dropdown {
+        left: 0;
+        right: auto;
+        min-width: 200px;
+        max-width: min(300px, calc(100vw - 24px));
+    }
+}
+
+/* narrow phones */
+@media (max-width: 480px) {
+    .neo-terminal-header {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "menu"
+            "brand"
+            "meta1"
+            "meta2";
+        justify-items: center;
+        text-align: center;
+        padding: 10px 10px !important;
+    }
+
+    .neo-menu-container,
+    .neo-system-id,
+    .neo-terminal-header > .neo-terminal-meta:nth-of-type(1),
+    .neo-terminal-header > .neo-terminal-meta:nth-of-type(2) {
+        justify-self: center;
+    }
+
+    .neo-menu-trigger {
+        width: 100%;
+        max-width: 220px;
+        justify-content: center;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .neo-logo {
+        width: clamp(92px, 42vw, 132px);
+    }
+
+    .neo-terminal-meta {
+        font-size: 0.7rem;
+        justify-content: center;
+    }
+
+    .neo-terminal-meta .neo-value,
+    .neo-terminal-meta .neo-value-clock {
+        min-width: 0;
+        text-align: left;
+    }
+
+    #neo-main-nav.neo-dropdown {
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(280px, calc(100vw - 20px));
+        max-width: calc(100vw - 20px);
+    }
+
+    .neo-menu-list li a {
+        padding: 0.8rem 0.9rem;
+        font-size: 0.8rem;
+    }
+}
