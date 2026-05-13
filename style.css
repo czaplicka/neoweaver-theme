@@ -1879,7 +1879,7 @@ body .neo-terminal-container::after {
 
 .neo-auth-panel .login-submit .button-primary,
 .neo-auth-submit .button,
-#neo-login-submit {
+.neo-login-submit {
     appearance: none;
     -webkit-appearance: none;
     display: inline-flex;
@@ -1917,7 +1917,7 @@ body .neo-terminal-container::after {
 /* terminal shimmer */
 .neo-auth-panel .login-submit .button-primary::before,
 .neo-auth-submit .button::before,
-#neo-login-submit::before {
+.neo-login-submit::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -1937,7 +1937,7 @@ body .neo-terminal-container::after {
 
 .neo-auth-panel .login-submit .button-primary:hover,
 .neo-auth-submit .button:hover,
-#neo-login-submit:hover {
+.neo-login-submit:hover {
     background: linear-gradient(180deg, #ebffae 0%, #cfff4f 55%, #adff00 100%) !important;
     color: #000000 !important;
     box-shadow:
