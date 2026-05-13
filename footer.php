@@ -1,5 +1,5 @@
 <footer class="neo-footer-container neo-crt">
-    <center><a href="javascript:void(0)" onclick="neoOpenAuthModal();"><button class="#neo-login-submit">Operator, log in or register here</button></a></center>
+    <center><a href="javascript:void(0)" onclick="neoOpenAuthModal();"><button class="neo-login-submit">Operator, log in or register here</button></a></center>
     <div class="neoweave-terminal">
         <div class="neo-footer-columns">
 
