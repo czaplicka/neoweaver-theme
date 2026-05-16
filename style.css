@@ -2002,3 +2002,226 @@ body .neo-terminal-container::after {
         letter-spacing: 0.14em;
     }
 }
+span.nw-keyword {
+	display: inline-block;
+	position: relative;
+	padding: 0.08em 0.45em 0.1em;
+	margin: 0 0.08em;
+	border: 1px solid rgba(120, 255, 180, 0.22);
+	border-radius: 0.35rem;
+	background:
+		linear-gradient(180deg, rgba(18, 38, 26, 0.9) 0%, rgba(8, 18, 12, 0.92) 100%);
+	color: #9fffbf;
+	font-family: "Courier New", Consolas, monospace;
+	font-size: 0.92em;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	text-shadow:
+		0 0 4px rgba(120, 255, 180, 0.18),
+		0 0 10px rgba(120, 255, 180, 0.05);
+	box-shadow:
+		0 0 0 1px rgba(120, 255, 180, 0.04) inset,
+		0 0 10px rgba(0, 0, 0, 0.18);
+	vertical-align: baseline;
+}
+
+span.nw-keyword::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	pointer-events: none;
+	background:
+		repeating-linear-gradient(
+			to bottom,
+			rgba(180, 255, 205, 0.05) 0px,
+			rgba(180, 255, 205, 0.05) 1px,
+			transparent 2px,
+			transparent 4px
+		);
+	opacity: 0.65;
+	mix-blend-mode: screen;
+}
+
+span.nw-keyword::after {
+	content: "";
+	position: absolute;
+	left: 8%;
+	right: 8%;
+	top: 52%;
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(140, 255, 190, 0.14) 20%,
+		rgba(140, 255, 190, 0.26) 50%,
+		rgba(140, 255, 190, 0.14) 80%,
+		transparent 100%
+	);
+	pointer-events: none;
+	opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	span.nw-keyword {
+		animation: nw-keyword-flicker 3.2s infinite ease-in-out;
+	}
+
+	span.nw-keyword::after {
+		animation: nw-keyword-scan 4.8s infinite linear;
+	}
+}
+
+@keyframes nw-keyword-flicker {
+	0%, 100% {
+		opacity: 1;
+		filter: brightness(1);
+	}
+	48% {
+		opacity: 0.96;
+		filter: brightness(1.03);
+	}
+	50% {
+		opacity: 0.9;
+		filter: brightness(0.98);
+	}
+	52% {
+		opacity: 0.98;
+		filter: brightness(1.04);
+	}
+}
+
+@keyframes nw-keyword-scan {
+	0% {
+		transform: translateY(-0.18em);
+		opacity: 0;
+	}
+	8% {
+		opacity: 0.7;
+	}
+	14% {
+		opacity: 0.18;
+	}
+	100% {
+		transform: translateY(0.22em);
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	span.nw-keyword,
+	span.nw-keyword::after {
+		animation: none !important;
+	}
+}
+.neo-crt {
+	position: relative;
+	height: 10px;
+	width: 100%;
+	overflow: hidden;
+	border-top: 1px solid rgba(120, 255, 180, 0.2);
+	border-bottom: 1px solid rgba(120, 255, 180, 0.08);
+	background:
+		linear-gradient(
+			180deg,
+			rgba(6, 16, 10, 0.98) 0%,
+			rgba(10, 24, 16, 0.96) 45%,
+			rgba(5, 12, 8, 0.98) 100%
+		);
+	box-shadow:
+		0 0 0 1px rgba(120, 255, 180, 0.04) inset,
+		0 0 14px rgba(80, 255, 150, 0.05);
+}
+
+.neo-crt::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background:
+		repeating-linear-gradient(
+			90deg,
+			rgba(160, 255, 200, 0.05) 0px,
+			rgba(160, 255, 200, 0.05) 1px,
+			transparent 2px,
+			transparent 6px
+		);
+	opacity: 0.45;
+	mix-blend-mode: screen;
+}
+
+.neo-crt::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: -22%;
+	width: 22%;
+	pointer-events: none;
+	background:
+		linear-gradient(
+			90deg,
+			transparent 0%,
+			rgba(120, 255, 180, 0.06) 18%,
+			rgba(160, 255, 210, 0.18) 48%,
+			rgba(120, 255, 180, 0.06) 82%,
+			transparent 100%
+		);
+	box-shadow:
+		0 0 10px rgba(120, 255, 180, 0.08),
+		0 0 18px rgba(120, 255, 180, 0.06);
+	opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.neo-crt {
+		animation: neo-crt-flicker 0.22s infinite;
+	}
+
+	.neo-crt::after {
+		animation: neo-crt-sweep 5.8s linear infinite;
+	}
+}
+
+@keyframes neo-crt-sweep {
+	0% {
+		left: -24%;
+		opacity: 0;
+	}
+	6% {
+		opacity: 0.85;
+	}
+	14% {
+		opacity: 1;
+	}
+	22% {
+		opacity: 0.28;
+	}
+	100% {
+		left: 102%;
+		opacity: 0;
+	}
+}
+
+@keyframes neo-crt-flicker {
+	0%   { opacity: 0.985; }
+	10%  { opacity: 0.972; }
+	20%  { opacity: 0.989; }
+	30%  { opacity: 0.978; }
+	40%  { opacity: 0.993; }
+	50%  { opacity: 0.981; }
+	60%  { opacity: 0.988; }
+	70%  { opacity: 0.975; }
+	80%  { opacity: 0.994; }
+	90%  { opacity: 0.982; }
+	100% { opacity: 0.987; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.neo-crt,
+	.neo-crt::after {
+		animation: none !important;
+	}
+}
