@@ -1,4 +1,5 @@
 <footer class="neo-footer-container neo-crt">
+    <?php echo do_shortcode('[tw_onboarding_slider]'); ?>
     <center><a href="javascript:void(0)" onclick="neoOpenAuthModal();"><button class="neo-login-submit">Operator, log in or register here</button></a></center>
     <div class="neoweave-terminal">
         <div class="neo-footer-columns">
