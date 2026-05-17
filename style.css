@@ -2233,3 +2233,22 @@ span.nw-keyword::after {
 		animation: none !important;
 	}
 }
+/* FIX 1: terminal-wrapper musi rosnąć razem z frame */
+.neo-terminal-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;          /* kluczowe dla flex children! */
+    overflow: hidden;
+}
+
+/* FIX 2: zamień height na min-height, żeby WP admin bar nie przycinał */
+.neo-monitor-frame {
+    height: auto;           /* zamiast height: 100vh */
+    min-height: 100vh;
+}
+
+/* FIX 3: jeśli jest WP admin bar */
+.admin-bar .neo-monitor-frame {
+    min-height: calc(100vh - 32px);
+}
