@@ -18,7 +18,11 @@ get_header();
                 <span class="neo-os-brand">>_ NEO_WEAVE_OS_1.0.0</span>
             </div>
             <div class="neo-os-header-right">
-                <span class="neo-node-id"><span class="status-dot"></span> SYSTEM_STREAM: <?php echo esc_html( strtoupper( wp_get_current_user()->display_name ) ); ?></span>
+                <span class="neo-node-id"><span class="status-dot"></span> SYSTEM_STREAM: <?php
+        $current_user = wp_get_current_user();
+        $display = $current_user->ID ? $current_user->display_name : 'INTRUDER';
+        echo esc_html( strtoupper( $display ) );
+    ?></span>
             </div>
         </header>
 
