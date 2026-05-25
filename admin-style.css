@@ -6,7 +6,7 @@
    ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
-
+.gvt-activation-notice { display:none; }
 :root {
     --nw-bg: #070909;
     --nw-bg-alt: #0b0f0f;
